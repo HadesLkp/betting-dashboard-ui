@@ -1,0 +1,183 @@
+<div class="container mt-4">
+
+  <h2>Nueva apuesta</h2>
+
+  <div class="card p-3 mb-4">
+
+    <div class="row">
+
+      <div class="col-md-4 mb-2">
+        <select class="form-control" [(ngModel)]="form.sport">
+
+          <option value="">Selecciona deporte</option>
+
+          <option value="FOOTBALL">Fútbol</option>
+          <option value="BASKETBALL">Baloncesto</option>
+          <option value="TENNIS">Tenis</option>
+          <option value="BASEBALL">Béisbol</option>
+          <option value="ESPORTS">eSports</option>
+          <option value="MMA">MMA</option>
+          <option value="BOXING">Boxeo</option>
+
+        </select>
+      </div>
+
+      <div class="col-md-4 mb-2">
+        <input class="form-control" placeholder="Event" [(ngModel)]="form.eventName">
+      </div>
+
+      <div class="col-md-4 mb-2">
+        <select class="form-control" [(ngModel)]="form.market">
+
+          <option value="">Selecciona mercado</option>
+
+          <option value="MATCH_WINNER">Ganador del partido</option>
+          <option value="OVER_UNDER_GOALS">Más/Menos goles</option>
+          <option value="BTTS">Ambos equipos marcan</option>
+          <option value="DOUBLE_CHANCE">Doble oportunidad</option>
+          <option value="DRAW_NO_BET">Empate no acción</option>
+          <option value="ASIAN_HANDICAP">Hándicap asiático</option>
+          <option value="FIRST_HALF_WINNER">Ganador primer tiempo</option>
+          <option value="CORRECT_SCORE">Marcador exacto</option>
+
+        </select>
+      </div>
+
+      <div class="col-md-4 mb-2">
+        <input class="form-control" placeholder="Selection" [(ngModel)]="form.selection">
+      </div>
+
+      <div class="col-md-2 mb-2">
+        <input type="number" class="form-control" placeholder="Odds" [(ngModel)]="form.odds">
+      </div>
+
+      <div class="col-md-2 mb-2">
+        <input type="number" class="form-control" placeholder="Stake" [(ngModel)]="form.stake">
+      </div>
+
+      <div class="col-md-4 mb-2">
+        <input type="number" class="form-control" placeholder="Estimated Probability"
+          [(ngModel)]="form.estimatedProbability">
+      </div>
+
+      <div class="col-md-12 mt-2">
+        <button class="btn btn-primary" (click)="createBet()">
+          Crear apuesta
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="card p-3 mb-4">
+    <h5>Filtros</h5>
+
+    <div class="row">
+
+      <div class="col-md-4 mb-2">
+        <select class="form-control" [(ngModel)]="filters.sport">
+          <option value="">Todos los deportes</option>
+          <option value="FOOTBALL">Fútbol</option>
+          <option value="BASKETBALL">Baloncesto</option>
+          <option value="TENNIS">Tenis</option>
+          <option value="BASEBALL">Béisbol</option>
+          <option value="ESPORTS">eSports</option>
+          <option value="MMA">MMA</option>
+          <option value="BOXING">Boxeo</option>
+        </select>
+      </div>
+
+      <div class="col-md-4 mb-2">
+        <select class="form-control" [(ngModel)]="filters.result">
+          <option value="">Todos</option>
+          <option value="pending">Pending</option>
+          <option value="win">Win</option>
+          <option value="loss">Loss</option>
+          <option value="push">Push</option>
+        </select>
+      </div>
+
+      <div class="col-md-4 mb-2">
+        <button class="btn btn-primary me-2" (click)="applyFilters()">
+          Filtrar
+        </button>
+
+        <button class="btn btn-secondary" (click)="clearFilters()">
+          Limpiar
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <h2>Historial</h2>
+
+  <table class="table table-striped">
+
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Sport</th>
+        <th>Market</th>
+        <th>Event</th>
+        <th>Odds</th>
+        <th>Stake</th>
+        <th>Result</th>
+        <th>Profit</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+
+    <tbody>
+
+      <tr *ngFor="let bet of bets">
+
+        <td>{{ bet.id }}</td>
+        <td>{{ getSportLabel(bet.sport) }}</td>
+        <td>{{ getMarketLabel(bet.market) }}</td>
+        <td>{{ bet.eventName }}</td>
+        <td>{{ bet.odds }}</td>
+        <td>{{ bet.stake }}</td>
+        <td>
+          <span class="badge" [ngClass]="{
+      'bg-success': bet.result === 'win',
+      'bg-danger': bet.result === 'loss',
+      'bg-secondary': bet.result === 'push',
+      'bg-warning text-dark': bet.result === 'pending'}">
+            {{ bet.result }}
+          </span>
+        </td>
+
+        <td [ngClass]="{
+    'text-success': bet.profit > 0,
+    'text-danger': bet.profit < 0
+  }">
+          {{ bet.profit }}
+        </td>
+
+        <td>
+
+          <button *ngIf="bet.result === 'pending'" class="btn btn-success btn-sm me-2"
+            (click)="settleBet(bet.id, 'win')">
+            Win
+          </button>
+
+          <button *ngIf="bet.result === 'pending'" class="btn btn-danger btn-sm me-2"
+            (click)="settleBet(bet.id, 'loss')">
+            Loss
+          </button>
+
+          <button *ngIf="bet.result === 'pending'" class="btn btn-secondary btn-sm" (click)="settleBet(bet.id, 'push')">
+            Push
+          </button>
+
+        </td>
+
+      </tr>
+
+    </tbody>
+
+  </table>
+
+</div>

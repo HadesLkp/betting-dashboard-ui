@@ -1,0 +1,82 @@
+<div class="container mt-4" *ngIf="bankroll">
+
+  <h2>Bankroll</h2>
+
+  <div class="row mb-4">
+
+    <div class="col-md-4">
+      <div class="card p-3">
+        <h6>Initial Bankroll</h6>
+        <h3>{{ bankroll.initialAmount }}</h3>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card p-3">
+        <h6>Current Bankroll</h6>
+        <h3>{{ bankroll.currentAmount }}</h3>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card p-3">
+        <h6>Growth</h6>
+        <h3>
+          {{
+          bankroll.currentAmount -
+          bankroll.initialAmount
+          }}
+        </h3>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="card p-3 mb-4">
+    <h5>Bankroll Evolution</h5>
+
+    <div style="height: 300px;">
+      <canvas id="bankrollChart"></canvas>
+    </div>
+  </div>
+
+  <div class="card p-3">
+
+    <h5>History</h5>
+
+    <table class="table table-striped">
+
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Bet ID</th>
+          <th>Profit</th>
+          <th>Bankroll</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        <tr *ngFor="let item of history">
+
+          <td>{{ item.id }}</td>
+          <td>{{ item.betId }}</td>
+          <td [ngClass]="{
+    'text-success': item.profit > 0,
+    'text-danger': item.profit < 0
+  }">
+            {{ item.profit }}
+          </td>
+          <td>{{ item.amount }}</td>
+          <td>{{ item.createdAt }}</td>
+
+        </tr>
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>

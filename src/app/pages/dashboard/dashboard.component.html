@@ -1,0 +1,103 @@
+<div class="container mt-4" *ngIf="stats">
+  <h2 class="mb-4">Betting Dashboard</h2>
+
+  <div class="row">
+    <div class="col-md-3 mb-3">
+      <div class="card p-3 shadow-sm border-0">
+        <small class="text-muted">Bankroll actual</small>
+        <h3 class="mt-2">
+          ${{ stats.bankroll.current | number:'1.2-2' }}
+        </h3>
+        <span class="text-muted">
+          Inicial: ${{ stats.bankroll.initial | number:'1.2-2' }}
+        </span>
+      </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+      <div class="card p-3 shadow-sm border-0">
+        <small class="text-muted">Ganancia total</small>
+        <h3 class="mt-2" [ngClass]="{
+          'text-success': stats.bankroll.growth > 0,
+          'text-danger': stats.bankroll.growth < 0
+        }">
+          {{ stats.bankroll.growth > 0 ? '+' : '' }}${{ stats.bankroll.growth | number:'1.2-2' }}
+        </h3>
+        <span class="text-muted">
+          Profit: ${{ stats.money.totalProfit | number:'1.2-2' }}
+        </span>
+      </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+      <div class="card p-3 shadow-sm border-0">
+        <small class="text-muted">ROI</small>
+        <h3 class="mt-2" [ngClass]="{
+          'text-success': stats.performance.roi > 0,
+          'text-danger': stats.performance.roi < 0
+        }">
+          {{ stats.performance.roi > 0 ? '+' : '' }}{{ stats.performance.roi | number:'1.2-2' }}%
+        </h3>
+        <span class="text-muted">
+          Stake: ${{ stats.money.settledStake | number:'1.2-2' }}
+        </span>
+      </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+      <div class="card p-3 shadow-sm border-0">
+        <small class="text-muted">Win Rate</small>
+        <h3 class="mt-2">
+          {{ stats.performance.winRate | number:'1.2-2' }}%
+        </h3>
+        <span class="text-muted">
+          {{ stats.bets.won }} ganadas / {{ stats.bets.settled }} cerradas
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card mt-4 p-3">
+    <h5>Resumen de apuestas</h5>
+
+    <div class="row">
+      <div class="col-md-2">Total: {{ stats.bets.total }}</div>
+      <div class="col-md-2">Ganadas: {{ stats.bets.won }}</div>
+      <div class="col-md-2">Perdidas: {{ stats.bets.lost }}</div>
+      <div class="col-md-2">Pendientes: {{ stats.bets.pending }}</div>
+      <div class="col-md-2">Push: {{ stats.bets.push }}</div>
+    </div>
+  </div>
+
+  <div class="card mt-4 p-3">
+    <h5>Rendimiento por deporte</h5>
+
+    <table class="table table-striped mt-3">
+      <thead>
+        <tr>
+          <th>Deporte</th>
+          <th>Apuestas</th>
+          <th>Ganadas</th>
+          <th>Perdidas</th>
+          <th>Stake</th>
+          <th>Profit</th>
+          <th>ROI</th>
+          <th>Win Rate</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let sport of stats.sports">
+          <td>{{ sport.sport }}</td>
+          <td>{{ sport.bets }}</td>
+          <td>{{ sport.won }}</td>
+          <td>{{ sport.lost }}</td>
+          <td>{{ sport.stake | number:'1.2-2' }}</td>
+          <td>{{ sport.profit | number:'1.2-2' }}</td>
+          <td>{{ sport.roi | number:'1.2-2' }}%</td>
+          <td>{{ sport.winRate | number:'1.2-2' }}%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
