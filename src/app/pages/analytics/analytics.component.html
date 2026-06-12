@@ -1,0 +1,71 @@
+<div class="container mt-4" *ngIf="stats">
+
+  <h2>Analytics</h2>
+
+  <div class="card p-3 mb-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h5 class="mb-0">Gráfica</h5>
+
+      <select class="form-control" style="max-width: 260px;" [(ngModel)]="selectedChart"
+        (change)="createAnalyticsChart()">
+
+        <option value="sportRoi">ROI por deporte</option>
+        <option value="sportProfit">Profit por deporte</option>
+        <option value="sportWinRate">Win Rate por deporte</option>
+        <option value="marketRoi">ROI por mercado</option>
+        <option value="marketProfit">Profit por mercado</option>
+        <option value="marketWinRate">Win Rate por mercado</option>
+      </select>
+    </div>
+
+    <div style="height: 300px;">
+      <canvas id="analyticsChart"></canvas>
+    </div>
+  </div>
+
+  <div class="card p-3">
+    <h5>{{ getTableTitle() }}</h5>
+
+    <table class="table table-striped mt-3">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Apuestas</th>
+          <th>Ganadas</th>
+          <th>Perdidas</th>
+          <th>Stake</th>
+          <th>Profit</th>
+          <th>ROI</th>
+          <th>Win Rate</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let item of getTableData()">
+          <td>{{ getTableLabel(item) }}</td>
+          <td>{{ item.bets }}</td>
+          <td>{{ item.won }}</td>
+          <td>{{ item.lost }}</td>
+          <td>${{ item.stake | number:'1.2-2' }}</td>
+
+          <td [ngClass]="{
+            'text-success': item.profit > 0,
+            'text-danger': item.profit < 0
+          }">
+            {{ item.profit > 0 ? '+' : '' }}${{ item.profit | number:'1.2-2' }}
+          </td>
+
+          <td [ngClass]="{
+            'text-success': item.roi > 0,
+            'text-danger': item.roi < 0
+          }">
+            {{ item.roi > 0 ? '+' : '' }}{{ item.roi | number:'1.2-2' }}%
+          </td>
+
+          <td>{{ item.winRate | number:'1.2-2' }}%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>

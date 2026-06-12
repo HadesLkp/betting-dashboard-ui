@@ -8,13 +8,15 @@ import { AppComponent } from './app.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { BetsComponent } from './pages/bets/bets.component';
 import { BankrollComponent } from './pages/bankroll/bankroll.component';
+import { AnalyticsComponent } from './pages/analytics/analytics.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     DashboardComponent,
     BetsComponent,
-    BankrollComponent
+    BankrollComponent,
+    AnalyticsComponent
   ],
   imports: [
     BrowserModule,

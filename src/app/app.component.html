@@ -4,27 +4,33 @@
   </a>
 
   <div class="navbar-nav">
-    <a
-      class="nav-link"
-      routerLink="/"
-      routerLinkActive="active"
-      [routerLinkActiveOptions]="{ exact: true }">
-      Dashboard
+    <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+      {{ t('DASHBOARD') }}
     </a>
 
-    <a
-      class="nav-link"
-      routerLink="/bets"
-      routerLinkActive="active">
-      Bets
+    <a class="nav-link" routerLink="/bets" routerLinkActive="active">
+      {{ t('BETS') }}
     </a>
 
-    <a
-      class="nav-link"
-      routerLink="/bankroll"
-      routerLinkActive="active">
-      Bankroll
+    <a class="nav-link" routerLink="/bankroll" routerLinkActive="active">
+      {{ t('BANKROLL') }}
     </a>
+
+    <a class="nav-link" routerLink="/analytics" routerLinkActive="active">
+      {{ t('ANALYTICS') }}
+    </a>
+  </div>
+
+  <div class="ms-auto">
+    <button class="btn btn-sm me-2" [ngClass]="getLang() === 'es' ? 'btn-light' : 'btn-outline-light'"
+      (click)="setLang('es')">
+      ES
+    </button>
+
+    <button class="btn btn-sm" [ngClass]="getLang() === 'en' ? 'btn-light' : 'btn-outline-light'"
+      (click)="setLang('en')">
+      EN
+    </button>
   </div>
 </nav>
 

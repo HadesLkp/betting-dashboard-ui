@@ -57,6 +57,14 @@
     </div>
   </div>
 
+  <div class="card mt-4 p-3 shadow-sm border-0">
+    <h5>Evolución del bankroll</h5>
+
+    <div style="height: 300px;">
+      <canvas id="dashboardBankrollChart"></canvas>
+    </div>
+  </div>
+
   <div class="card mt-4 p-3">
     <h5>Resumen de apuestas</h5>
 
@@ -76,25 +84,30 @@
       <thead>
         <tr>
           <th>Deporte</th>
-          <th>Apuestas</th>
-          <th>Ganadas</th>
-          <th>Perdidas</th>
-          <th>Stake</th>
-          <th>Profit</th>
           <th>ROI</th>
+          <th>Profit</th>
           <th>Win Rate</th>
         </tr>
       </thead>
 
       <tbody>
         <tr *ngFor="let sport of stats.sports">
-          <td>{{ sport.sport }}</td>
-          <td>{{ sport.bets }}</td>
-          <td>{{ sport.won }}</td>
-          <td>{{ sport.lost }}</td>
-          <td>{{ sport.stake | number:'1.2-2' }}</td>
-          <td>{{ sport.profit | number:'1.2-2' }}</td>
-          <td>{{ sport.roi | number:'1.2-2' }}%</td>
+          <td>{{ getSportLabel(sport.sport) }}</td>
+
+          <td [ngClass]="{
+        'text-success': sport.roi > 0,
+        'text-danger': sport.roi < 0
+      }">
+            {{ sport.roi > 0 ? '+' : '' }}{{ sport.roi | number:'1.2-2' }}%
+          </td>
+
+          <td [ngClass]="{
+        'text-success': sport.profit > 0,
+        'text-danger': sport.profit < 0
+      }">
+            {{ sport.profit > 0 ? '+' : '' }}${{ sport.profit | number:'1.2-2' }}
+          </td>
+
           <td>{{ sport.winRate | number:'1.2-2' }}%</td>
         </tr>
       </tbody>

@@ -1,6 +1,17 @@
 <div class="container mt-4">
 
-  <h2>Nueva apuesta</h2>
+  <h2>{{ t('NEW_BET') }}</h2>
+
+  <div *ngIf="isEditing" class="alert alert-info d-flex justify-content-between align-items-center">
+
+    <span>
+      ✏️ Editando apuesta #{{ editingBetId }}
+    </span>
+
+    <button class="btn btn-sm btn-outline-secondary" (click)="resetForm()">
+      Cancelar edición
+    </button>
+  </div>
 
   <div class="card p-3 mb-4">
 
@@ -61,8 +72,16 @@
       </div>
 
       <div class="col-md-12 mt-2">
-        <button class="btn btn-primary" (click)="createBet()">
-          Crear apuesta
+        <button class="btn btn-primary me-2" (click)="saveBet()">
+          {{
+          isEditing
+          ? t('UPDATE_BET')
+          : t('CREATE_BET')
+          }}
+        </button>
+
+        <button *ngIf="isEditing" class="btn btn-secondary" (click)="resetForm()">
+          Cancelar
         </button>
       </div>
 
@@ -75,7 +94,8 @@
 
     <div class="row">
 
-      <div class="col-md-4 mb-2">
+      <div class="col-md-3 mb-2">
+        <label class="form-label">Deporte</label>
         <select class="form-control" [(ngModel)]="filters.sport">
           <option value="">Todos los deportes</option>
           <option value="FOOTBALL">Fútbol</option>
@@ -88,9 +108,25 @@
         </select>
       </div>
 
-      <div class="col-md-4 mb-2">
+      <div class="col-md-3 mb-2">
+        <label class="form-label">Mercado</label>
+        <select class="form-control" [(ngModel)]="filters.market">
+          <option value="">Todos los mercados</option>
+          <option value="MATCH_WINNER">Ganador del partido</option>
+          <option value="OVER_UNDER_GOALS">Más/Menos goles</option>
+          <option value="BTTS">Ambos equipos marcan</option>
+          <option value="DOUBLE_CHANCE">Doble oportunidad</option>
+          <option value="DRAW_NO_BET">Empate no acción</option>
+          <option value="ASIAN_HANDICAP">Hándicap asiático</option>
+          <option value="FIRST_HALF_WINNER">Ganador primer tiempo</option>
+          <option value="CORRECT_SCORE">Marcador exacto</option>
+        </select>
+      </div>
+
+      <div class="col-md-3 mb-2">
+        <label class="form-label">Resultado</label>
         <select class="form-control" [(ngModel)]="filters.result">
-          <option value="">Todos</option>
+          <option value="">Todos los resultados</option>
           <option value="pending">Pending</option>
           <option value="win">Win</option>
           <option value="loss">Loss</option>
@@ -98,15 +134,35 @@
         </select>
       </div>
 
-      <div class="col-md-4 mb-2">
-        <button class="btn btn-primary me-2" (click)="applyFilters()">
-          Filtrar
-        </button>
+      <div class="col-md-3 mb-2">
+        <label class="form-label">
+          Fecha desde
+        </label>
 
-        <button class="btn btn-secondary" (click)="clearFilters()">
-          Limpiar
-        </button>
+        <input type="date" class="form-control" [(ngModel)]="filters.from">
       </div>
+
+      <div class="col-md-3 mb-2">
+        <label class="form-label">
+          Fecha hasta
+        </label>
+
+        <input type="date" class="form-control" [(ngModel)]="filters.to">
+      </div>
+
+    </div>
+    <div class="col-md-6 mb-2">
+      <button class="btn btn-primary me-2" (click)="applyFilters()">
+        Filtrar
+      </button>
+
+      <button class="btn btn-secondary" (click)="clearFilters()">
+        Limpiar
+      </button>
+
+      <button class="btn btn-success ms-2" (click)="exportToCsv()">
+        Exportar CSV
+      </button>
 
     </div>
   </div>
@@ -123,6 +179,7 @@
         <th>Event</th>
         <th>Odds</th>
         <th>Stake</th>
+        <th>Fecha</th>
         <th>Result</th>
         <th>Profit</th>
         <th>Acciones</th>
@@ -139,6 +196,7 @@
         <td>{{ bet.eventName }}</td>
         <td>{{ bet.odds }}</td>
         <td>{{ bet.stake }}</td>
+        <td>{{ bet.placedAt | date:'dd/MM/yyyy HH:mm' }}</td>
         <td>
           <span class="badge" [ngClass]="{
       'bg-success': bet.result === 'win',
@@ -170,6 +228,14 @@
 
           <button *ngIf="bet.result === 'pending'" class="btn btn-secondary btn-sm" (click)="settleBet(bet.id, 'push')">
             Push
+          </button>
+
+          <button class="btn btn-outline-danger btn-sm ms-2" (click)="deleteBet(bet.id)">
+            Eliminar
+          </button>
+
+          <button *ngIf="bet.result === 'pending'" class="btn btn-outline-primary btn-sm ms-2" (click)="editBet(bet)">
+            Editar
           </button>
 
         </td>
