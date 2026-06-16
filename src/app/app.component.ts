@@ -9,7 +9,7 @@ import { TranslationService } from './services/translation.service';
 export class AppComponent {
   constructor(
     public readonly translationService: TranslationService,
-  ) {}
+  ) { }
 
   t(key: string): string {
     return this.translationService.t(key);
@@ -17,6 +17,7 @@ export class AppComponent {
 
   setLang(lang: 'es' | 'en'): void {
     this.translationService.setLang(lang);
+    window.location.reload();
   }
 
   getLang(): string {

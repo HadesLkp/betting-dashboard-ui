@@ -1,26 +1,26 @@
 <div class="container mt-4" *ngIf="bankroll">
 
-  <h2>Bankroll</h2>
+  <h2>{{ t('BANKROLL') }}</h2>
 
   <div class="row mb-4">
 
     <div class="col-md-4">
       <div class="card p-3">
-        <h6>Initial Bankroll</h6>
+        <h6>{{ t('INITIAL_BANKROLL') }}</h6>
         <h3>{{ bankroll.initialAmount }}</h3>
       </div>
     </div>
 
     <div class="col-md-4">
       <div class="card p-3">
-        <h6>Current Bankroll</h6>
+        <h6>{{ t('CURRENT_BANKROLL') }}</h6>
         <h3>{{ bankroll.currentAmount }}</h3>
       </div>
     </div>
 
     <div class="col-md-4">
       <div class="card p-3">
-        <h6>Growth</h6>
+        <h6>{{ t('GROWTH') }}</h6>
         <h3>
           {{
           bankroll.currentAmount -
@@ -33,7 +33,7 @@
   </div>
 
   <div class="card p-3 mb-4">
-    <h5>Bankroll Evolution</h5>
+    <h5>{{ t('BANKROLL_EVOLUTION') }}</h5>
 
     <div style="height: 300px;">
       <canvas id="bankrollChart"></canvas>
@@ -42,17 +42,17 @@
 
   <div class="card p-3">
 
-    <h5>History</h5>
+    <h5>{{ t('HISTORY') }}</h5>
 
     <table class="table table-striped">
 
       <thead>
         <tr>
           <th>ID</th>
-          <th>Bet ID</th>
-          <th>Profit</th>
-          <th>Bankroll</th>
-          <th>Date</th>
+          <th>{{ t('BET_ID') }}</th>
+          <th>{{ t('PROFIT') }}</th>
+          <th>{{ t('BANKROLL') }}</th>
+          <th>{{ t('DATE') }}</th>
         </tr>
       </thead>
 
@@ -69,7 +69,7 @@
             {{ item.profit }}
           </td>
           <td>{{ item.amount }}</td>
-          <td>{{ item.createdAt }}</td>
+          <td>{{ item.createdAt | date:'dd/MM/yyyy HH:mm' }}</td>
 
         </tr>
 

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BetsService } from '../../services/bets.service';
+import { TranslationService } from '../../services/translation.service';
 import Swal from 'sweetalert2';
 interface BetForm {
   sport: string;
@@ -41,7 +42,10 @@ export class BetsComponent implements OnInit {
     to: '',
   };
 
-  constructor(private readonly betsService: BetsService) { }
+  constructor(
+    private readonly betsService: BetsService,
+    private readonly translationService: TranslationService
+  ) { }
 
   ngOnInit(): void {
     this.loadBets();
@@ -82,66 +86,66 @@ export class BetsComponent implements OnInit {
   }
 
   exportToCsv(): void {
-  if (!this.bets.length) {
-    Swal.fire({
-      title: 'Sin datos',
-      text: 'No hay apuestas para exportar.',
-      icon: 'info',
+    if (!this.bets.length) {
+      Swal.fire({
+        title: this.t('NO_DATA'),
+        text: this.t('NO_BETS_TO_EXPORT'),
+        icon: 'info',
+      });
+
+      return;
+    }
+
+    const headers = [
+      'ID',
+      'Sport',
+      'Market',
+      'Event',
+      'Selection',
+      'Odds',
+      'Stake',
+      'Estimated Probability',
+      'Result',
+      'Profit',
+      'Date',
+    ];
+
+    const rows = this.bets.map((bet) => [
+      bet.id,
+      this.getSportLabel(bet.sport),
+      this.getMarketLabel(bet.market),
+      bet.eventName,
+      bet.selection,
+      bet.odds,
+      bet.stake,
+      bet.estimatedProbability,
+      bet.result,
+      bet.profit,
+      new Date(bet.placedAt).toLocaleString(),
+    ]);
+
+    const csvContent = [
+      headers.join(','),
+      ...rows.map((row) =>
+        row
+          .map((value) => `"${String(value).replace(/"/g, '""')}"`)
+          .join(','),
+      ),
+    ].join('\n');
+
+    const blob = new Blob([csvContent], {
+      type: 'text/csv;charset=utf-8;',
     });
 
-    return;
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+
+    link.href = url;
+    link.download = `bets-${new Date().toISOString().slice(0, 10)}.csv`;
+    link.click();
+
+    window.URL.revokeObjectURL(url);
   }
-
-  const headers = [
-    'ID',
-    'Sport',
-    'Market',
-    'Event',
-    'Selection',
-    'Odds',
-    'Stake',
-    'Estimated Probability',
-    'Result',
-    'Profit',
-    'Date',
-  ];
-
-  const rows = this.bets.map((bet) => [
-    bet.id,
-    this.getSportLabel(bet.sport),
-    this.getMarketLabel(bet.market),
-    bet.eventName,
-    bet.selection,
-    bet.odds,
-    bet.stake,
-    bet.estimatedProbability,
-    bet.result,
-    bet.profit,
-    new Date(bet.placedAt).toLocaleString(),
-  ]);
-
-  const csvContent = [
-    headers.join(','),
-    ...rows.map((row) =>
-      row
-        .map((value) => `"${String(value).replace(/"/g, '""')}"`)
-        .join(','),
-    ),
-  ].join('\n');
-
-  const blob = new Blob([csvContent], {
-    type: 'text/csv;charset=utf-8;',
-  });
-
-  const url = window.URL.createObjectURL(blob);
-  const link = document.createElement('a');
-
-  link.href = url;
-  link.download = `bets-${new Date().toISOString().slice(0, 10)}.csv`;
-  link.click();
-
-  window.URL.revokeObjectURL(url);
-}
 
   clearFilters(): void {
     this.filters = {
@@ -155,14 +159,18 @@ export class BetsComponent implements OnInit {
     this.loadBets();
   }
 
+  t(key: string): string {
+    return this.translationService.t(key);
+  }
+
   deleteBet(id: number): void {
     Swal.fire({
-      title: '¿Eliminar apuesta?',
-      text: 'Esta acción no se puede deshacer.',
+      title: this.t('DELETE_BET'),
+      text: this.t('DELETE_BET_TEXT'),
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: 'Sí, eliminar',
-      cancelButtonText: 'Cancelar',
+      confirmButtonText: this.t('YES_DELETE'),
+      cancelButtonText: this.t('CANCEL'),
       confirmButtonColor: '#dc3545',
     }).then((result) => {
 
@@ -174,8 +182,8 @@ export class BetsComponent implements OnInit {
         next: () => {
 
           Swal.fire({
-            title: 'Eliminada',
-            text: 'La apuesta fue eliminada correctamente.',
+            title: this.t('DELETED'),
+            text: this.t('BET_DELETED_SUCCESS'),
             icon: 'success',
             timer: 1500,
             showConfirmButton: false,
@@ -187,8 +195,8 @@ export class BetsComponent implements OnInit {
           console.error(error);
 
           Swal.fire({
-            title: 'Error',
-            text: 'No fue posible eliminar la apuesta.',
+            title: this.t('ERROR'),
+            text: this.t('DELETE_ERROR'),
             icon: 'error',
           });
         },
@@ -197,32 +205,11 @@ export class BetsComponent implements OnInit {
   }
 
   getSportLabel(sport: string): string {
-    const sports: Record<string, string> = {
-      FOOTBALL: 'Fútbol',
-      BASKETBALL: 'Baloncesto',
-      TENNIS: 'Tenis',
-      BASEBALL: 'Béisbol',
-      ESPORTS: 'eSports',
-      MMA: 'MMA',
-      BOXING: 'Boxeo',
-    };
-
-    return sports[sport] || sport;
+    return this.translationService.t(sport);
   }
 
   getMarketLabel(market: string): string {
-    const markets: Record<string, string> = {
-      MATCH_WINNER: 'Ganador del partido',
-      OVER_UNDER_GOALS: 'Más/Menos goles',
-      BTTS: 'Ambos equipos marcan',
-      DOUBLE_CHANCE: 'Doble oportunidad',
-      DRAW_NO_BET: 'Empate no acción',
-      ASIAN_HANDICAP: 'Hándicap asiático',
-      FIRST_HALF_WINNER: 'Ganador primer tiempo',
-      CORRECT_SCORE: 'Marcador exacto',
-    };
-
-    return markets[market] || market;
+    return this.translationService.t(market);
   }
 
   saveBet(): void {
@@ -230,8 +217,8 @@ export class BetsComponent implements OnInit {
       this.betsService.updateBet(this.editingBetId, this.form).subscribe({
         next: () => {
           Swal.fire({
-            title: 'Actualizada',
-            text: 'La apuesta fue actualizada correctamente.',
+            title: this.t('UPDATED'),
+            text: this.t('BET_UPDATED_SUCCESS'),
             icon: 'success',
             timer: 1500,
             showConfirmButton: false,
@@ -251,8 +238,8 @@ export class BetsComponent implements OnInit {
     this.betsService.createBet(this.form).subscribe({
       next: () => {
         Swal.fire({
-          title: 'Creada',
-          text: 'La apuesta fue creada correctamente.',
+          title: this.t('CREATED'),
+          text: this.t('BET_CREATED_SUCCESS'),
           icon: 'success',
           timer: 1500,
           showConfirmButton: false,

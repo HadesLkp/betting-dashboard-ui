@@ -4,19 +4,19 @@
   <div class="row">
     <div class="col-md-3 mb-3">
       <div class="card p-3 shadow-sm border-0">
-        <small class="text-muted">Bankroll actual</small>
+        <small class="text-muted">{{ t('CURRENT_BANKROLL') }}</small>
         <h3 class="mt-2">
           ${{ stats.bankroll.current | number:'1.2-2' }}
         </h3>
         <span class="text-muted">
-          Inicial: ${{ stats.bankroll.initial | number:'1.2-2' }}
+          {{ t('INITIAL_BANKROLL') }}: ${{ stats.bankroll.initial | number:'1.2-2' }}
         </span>
       </div>
     </div>
 
     <div class="col-md-3 mb-3">
       <div class="card p-3 shadow-sm border-0">
-        <small class="text-muted">Ganancia total</small>
+        <small class="text-muted">{{ t('TOTAL_PROFIT') }}</small>
         <h3 class="mt-2" [ngClass]="{
           'text-success': stats.bankroll.growth > 0,
           'text-danger': stats.bankroll.growth < 0
@@ -24,7 +24,7 @@
           {{ stats.bankroll.growth > 0 ? '+' : '' }}${{ stats.bankroll.growth | number:'1.2-2' }}
         </h3>
         <span class="text-muted">
-          Profit: ${{ stats.money.totalProfit | number:'1.2-2' }}
+          {{ t('PROFIT') }}: ${{ stats.money.totalProfit | number:'1.2-2' }}
         </span>
       </div>
     </div>
@@ -39,26 +39,26 @@
           {{ stats.performance.roi > 0 ? '+' : '' }}{{ stats.performance.roi | number:'1.2-2' }}%
         </h3>
         <span class="text-muted">
-          Stake: ${{ stats.money.settledStake | number:'1.2-2' }}
+          {{ t('STAKE') }}: ${{ stats.money.settledStake | number:'1.2-2' }}
         </span>
       </div>
     </div>
 
     <div class="col-md-3 mb-3">
       <div class="card p-3 shadow-sm border-0">
-        <small class="text-muted">Win Rate</small>
+        <small class="text-muted">{{ t('WIN_RATE') }}</small>
         <h3 class="mt-2">
           {{ stats.performance.winRate | number:'1.2-2' }}%
         </h3>
         <span class="text-muted">
-          {{ stats.bets.won }} ganadas / {{ stats.bets.settled }} cerradas
+          {{ stats.bets.won }} {{ t('WON') }} / {{ stats.bets.settled }} {{ t('SETTLED') }}
         </span>
       </div>
     </div>
   </div>
 
   <div class="card mt-4 p-3 shadow-sm border-0">
-    <h5>Evolución del bankroll</h5>
+    <h5>{{ t('BANKROLL_EVOLUTION') }}</h5>
 
     <div style="height: 300px;">
       <canvas id="dashboardBankrollChart"></canvas>
@@ -66,27 +66,27 @@
   </div>
 
   <div class="card mt-4 p-3">
-    <h5>Resumen de apuestas</h5>
+    <h5>{{ t('BETS_SUMMARY') }}</h5>
 
     <div class="row">
-      <div class="col-md-2">Total: {{ stats.bets.total }}</div>
-      <div class="col-md-2">Ganadas: {{ stats.bets.won }}</div>
-      <div class="col-md-2">Perdidas: {{ stats.bets.lost }}</div>
-      <div class="col-md-2">Pendientes: {{ stats.bets.pending }}</div>
-      <div class="col-md-2">Push: {{ stats.bets.push }}</div>
+      <div class="col-md-2">{{ t('TOTAL') }}: {{ stats.bets.total }}</div>
+      <div class="col-md-2">{{ t('WON') }}: {{ stats.bets.won }}</div>
+      <div class="col-md-2">{{ t('LOST') }}: {{ stats.bets.lost }}</div>
+      <div class="col-md-2">{{ t('PENDING') }}: {{ stats.bets.pending }}</div>
+      <div class="col-md-2">{{ t('PUSH') }}: {{ stats.bets.push }}</div>
     </div>
   </div>
 
   <div class="card mt-4 p-3">
-    <h5>Rendimiento por deporte</h5>
+    <h5>{{ t('SPORT_PERFORMANCE') }}</h5>
 
     <table class="table table-striped mt-3">
       <thead>
         <tr>
-          <th>Deporte</th>
+          <th>{{ t('SPORT') }}</th>
           <th>ROI</th>
-          <th>Profit</th>
-          <th>Win Rate</th>
+          <th>{{ t('PROFIT') }}</th>
+          <th>{{ t('WIN_RATE') }}</th>
         </tr>
       </thead>
 

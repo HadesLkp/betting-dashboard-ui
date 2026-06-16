@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BankrollService } from '../../services/bankroll.service';
 import { Chart } from 'chart.js';
+import { TranslationService } from '../../services/translation.service';
 
 @Component({
   selector: 'app-bankroll',
@@ -14,11 +15,16 @@ export class BankrollComponent implements OnInit {
 
   constructor(
     private readonly bankrollService: BankrollService,
+    private readonly translationService: TranslationService
   ) { }
 
   ngOnInit(): void {
     this.loadBankroll();
   }
+
+  t(key: string): string {
+  return this.translationService.t(key);
+}
 
   loadBankroll(): void {
     this.bankrollService.getCurrent().subscribe({

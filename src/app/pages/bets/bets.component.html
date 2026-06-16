@@ -5,11 +5,11 @@
   <div *ngIf="isEditing" class="alert alert-info d-flex justify-content-between align-items-center">
 
     <span>
-      ✏️ Editando apuesta #{{ editingBetId }}
+      ✏️ {{ t('EDITING_BET') }} #{{ editingBetId }}
     </span>
 
     <button class="btn btn-sm btn-outline-secondary" (click)="resetForm()">
-      Cancelar edición
+      {{ t('CANCEL_EDIT') }}
     </button>
   </div>
 
@@ -20,46 +20,44 @@
       <div class="col-md-4 mb-2">
         <select class="form-control" [(ngModel)]="form.sport">
 
-          <option value="">Selecciona deporte</option>
-
-          <option value="FOOTBALL">Fútbol</option>
-          <option value="BASKETBALL">Baloncesto</option>
-          <option value="TENNIS">Tenis</option>
-          <option value="BASEBALL">Béisbol</option>
-          <option value="ESPORTS">eSports</option>
-          <option value="MMA">MMA</option>
-          <option value="BOXING">Boxeo</option>
+          <option value="">{{ t('SELECT_SPORT') }}</option>
+          <option value="FOOTBALL">{{ t('FOOTBALL') }}</option>
+          <option value="BASKETBALL">{{ t('BASKETBALL') }}</option>
+          <option value="TENNIS">{{ t('TENNIS') }}</option>
+          <option value="BASEBALL">{{ t('BASEBALL') }}</option>
+          <option value="ESPORTS">{{ t('ESPORTS') }}</option>
+          <option value="MMA">{{ t('MMA') }}</option>
+          <option value="BOXING">{{ t('BOXING') }}</option>
 
         </select>
       </div>
 
       <div class="col-md-4 mb-2">
-        <input class="form-control" placeholder="Event" [(ngModel)]="form.eventName">
+        <input class="form-control" [placeholder]="t('EVENT')" [(ngModel)]="form.eventName">
       </div>
 
       <div class="col-md-4 mb-2">
         <select class="form-control" [(ngModel)]="form.market">
 
-          <option value="">Selecciona mercado</option>
-
-          <option value="MATCH_WINNER">Ganador del partido</option>
-          <option value="OVER_UNDER_GOALS">Más/Menos goles</option>
-          <option value="BTTS">Ambos equipos marcan</option>
-          <option value="DOUBLE_CHANCE">Doble oportunidad</option>
-          <option value="DRAW_NO_BET">Empate no acción</option>
-          <option value="ASIAN_HANDICAP">Hándicap asiático</option>
-          <option value="FIRST_HALF_WINNER">Ganador primer tiempo</option>
-          <option value="CORRECT_SCORE">Marcador exacto</option>
+          <option value="">{{ t('SELECT_MARKET') }}</option>
+          <option value="MATCH_WINNER">{{ t('MATCH_WINNER') }}</option>
+          <option value="OVER_UNDER_GOALS">{{ t('OVER_UNDER_GOALS') }}</option>
+          <option value="BTTS">{{ t('BTTS') }}</option>
+          <option value="DOUBLE_CHANCE">{{ t('DOUBLE_CHANCE') }}</option>
+          <option value="DRAW_NO_BET">{{ t('DRAW_NO_BET') }}</option>
+          <option value="ASIAN_HANDICAP">{{ t('ASIAN_HANDICAP') }}</option>
+          <option value="FIRST_HALF_WINNER">{{ t('FIRST_HALF_WINNER') }}</option>
+          <option value="CORRECT_SCORE">{{ t('CORRECT_SCORE') }}</option>
 
         </select>
       </div>
 
       <div class="col-md-4 mb-2">
-        <input class="form-control" placeholder="Selection" [(ngModel)]="form.selection">
+        <input class="form-control" [placeholder]="t('SELECTION')" [(ngModel)]="form.selection">
       </div>
 
       <div class="col-md-2 mb-2">
-        <input type="number" class="form-control" placeholder="Odds" [(ngModel)]="form.odds">
+        <input type="number" class="form-control" [placeholder]="t('ODDS')" [(ngModel)]="form.odds">
       </div>
 
       <div class="col-md-2 mb-2">
@@ -67,7 +65,7 @@
       </div>
 
       <div class="col-md-4 mb-2">
-        <input type="number" class="form-control" placeholder="Estimated Probability"
+        <input type="number" class="form-control" [placeholder]="t('ESTIMATED_PROBABILITY')"
           [(ngModel)]="form.estimatedProbability">
       </div>
 
@@ -90,12 +88,12 @@
   </div>
 
   <div class="card p-3 mb-4">
-    <h5>Filtros</h5>
+    <h5>{{ t('FILTERS') }}</h5>
 
     <div class="row">
 
       <div class="col-md-3 mb-2">
-        <label class="form-label">Deporte</label>
+        <label class="form-label">{{ t('SPORT') }}</label>
         <select class="form-control" [(ngModel)]="filters.sport">
           <option value="">Todos los deportes</option>
           <option value="FOOTBALL">Fútbol</option>
@@ -109,7 +107,7 @@
       </div>
 
       <div class="col-md-3 mb-2">
-        <label class="form-label">Mercado</label>
+        <label class="form-label">{{ t('MARKET') }}</label>
         <select class="form-control" [(ngModel)]="filters.market">
           <option value="">Todos los mercados</option>
           <option value="MATCH_WINNER">Ganador del partido</option>
@@ -124,7 +122,7 @@
       </div>
 
       <div class="col-md-3 mb-2">
-        <label class="form-label">Resultado</label>
+        <label class="form-label">{{ t('RESULT') }}</label>
         <select class="form-control" [(ngModel)]="filters.result">
           <option value="">Todos los resultados</option>
           <option value="pending">Pending</option>
@@ -135,17 +133,13 @@
       </div>
 
       <div class="col-md-3 mb-2">
-        <label class="form-label">
-          Fecha desde
-        </label>
+        <label class="form-label">{{ t('FROM_DATE') }}</label>
 
         <input type="date" class="form-control" [(ngModel)]="filters.from">
       </div>
 
       <div class="col-md-3 mb-2">
-        <label class="form-label">
-          Fecha hasta
-        </label>
+        <label class="form-label">{{ t('TO_DATE') }}</label>
 
         <input type="date" class="form-control" [(ngModel)]="filters.to">
       </div>
@@ -153,36 +147,36 @@
     </div>
     <div class="col-md-6 mb-2">
       <button class="btn btn-primary me-2" (click)="applyFilters()">
-        Filtrar
+        {{ t('FILTER') }}
       </button>
 
       <button class="btn btn-secondary" (click)="clearFilters()">
-        Limpiar
+        {{ t('CLEAR') }}
       </button>
 
       <button class="btn btn-success ms-2" (click)="exportToCsv()">
-        Exportar CSV
+        {{ t('EXPORT_CSV') }}
       </button>
 
     </div>
   </div>
 
-  <h2>Historial</h2>
+  <h2>{{ t('HISTORY') }}</h2>
 
   <table class="table table-striped">
 
     <thead>
       <tr>
         <th>ID</th>
-        <th>Sport</th>
-        <th>Market</th>
-        <th>Event</th>
-        <th>Odds</th>
-        <th>Stake</th>
-        <th>Fecha</th>
-        <th>Result</th>
-        <th>Profit</th>
-        <th>Acciones</th>
+        <th>{{ t('SPORT') }}</th>
+        <th>{{ t('MARKET') }}</th>
+        <th>{{ t('EVENT') }}</th>
+        <th>{{ t('ODDS') }}</th>
+        <th>{{ t('STAKE') }}</th>
+        <th>{{ t('DATE') }}</th>
+        <th>{{ t('RESULT') }}</th>
+        <th>{{ t('PROFIT') }}</th>
+        <th>{{ t('ACTIONS') }}</th>
       </tr>
     </thead>
 
@@ -203,7 +197,7 @@
       'bg-danger': bet.result === 'loss',
       'bg-secondary': bet.result === 'push',
       'bg-warning text-dark': bet.result === 'pending'}">
-            {{ bet.result }}
+            {{ t(bet.result.toUpperCase()) }}
           </span>
         </td>
 
@@ -231,11 +225,11 @@
           </button>
 
           <button class="btn btn-outline-danger btn-sm ms-2" (click)="deleteBet(bet.id)">
-            Eliminar
+            {{ t('DELETE') }}
           </button>
 
           <button *ngIf="bet.result === 'pending'" class="btn btn-outline-primary btn-sm ms-2" (click)="editBet(bet)">
-            Editar
+            {{ t('EDIT') }}
           </button>
 
         </td>
