@@ -2,6 +2,32 @@
 
   <h2>{{ t('NEW_BET') }}</h2>
 
+  <div class="card p-3 mb-4">
+  <label class="form-label">Origen de apuesta</label>
+
+  <div>
+    <label class="me-3">
+      <input
+        type="radio"
+        name="betCreationMode"
+        value="manual"
+        [(ngModel)]="betCreationMode"
+        (change)="changeBetCreationMode()">
+      Manual
+    </label>
+
+    <label>
+      <input
+        type="radio"
+        name="betCreationMode"
+        value="api"
+        [(ngModel)]="betCreationMode"
+        (change)="changeBetCreationMode()">
+      Eventos reales
+    </label>
+  </div>
+</div>
+
   <div *ngIf="isEditing" class="alert alert-info d-flex justify-content-between align-items-center">
 
     <span>
@@ -16,6 +42,55 @@
   <div class="card p-3 mb-4">
 
     <div class="row">
+
+      <div class="col-md-6 mb-2" *ngIf="betCreationMode === 'api'">
+        <label class="form-label">Partido</label>
+        <select class="form-control" [(ngModel)]="selectedOddsEventId" (change)="selectOddsEvent()">
+
+          <option value="">Selecciona un partido</option>
+
+          <option *ngFor="let event of oddsEvents" [value]="event.id">
+            {{ event.homeTeam }} vs {{ event.awayTeam }}
+          </option>
+        </select>
+      </div>
+
+      <div class="col-md-6 mb-2" *ngIf="betCreationMode === 'api'">
+
+  <label class="form-label">Mercado</label>
+
+  <select
+    class="form-control"
+    [(ngModel)]="selectedMarketKey"
+    (change)="selectMarket()"
+    [disabled]="!selectedOddsEventId">
+
+    <option value="">Selecciona un mercado</option>
+
+    <option
+      *ngFor="let market of selectedMarkets"
+      [value]="market.key">
+
+      {{ market.key }}
+
+    </option>
+
+  </select>
+
+</div>
+
+      <div class="col-md-6 mb-2" *ngFor="let outcome of selectedOutcomes">
+        <label class="form-label">Selección / Cuota</label>
+        <select class="form-control" [(ngModel)]="selectedOutcomeName" (change)="selectOutcome()"
+          [disabled]="!selectedOddsEventId">
+
+          <option value="">Selecciona una opción</option>
+
+          <option *ngFor="let outcome of selectedOutcomes" [value]="outcome.name">
+            {{ outcome.name }} - {{ outcome.price }}
+          </option>
+        </select>
+      </div>
 
       <div class="col-md-4 mb-2">
         <select class="form-control" [(ngModel)]="form.sport">

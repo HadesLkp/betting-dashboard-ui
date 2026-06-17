@@ -25,8 +25,10 @@ export class BetsComponent implements OnInit {
   oddsEvents: any[] = [];
   selectedOddsEventId = '';
   selectedOutcomeName = '';
-
-
+  selectedOutcomes: any[] = [];
+  betCreationMode: 'manual' | 'api' = 'manual';
+  selectedMarketKey = '';
+  selectedMarkets: any[] = [];
 
   form: BetForm = {
     sport: '',
@@ -70,32 +72,41 @@ export class BetsComponent implements OnInit {
       });
   }
 
+  changeBetCreationMode(): void {
+    this.resetForm();
+
+    this.selectedOddsEventId = '';
+    this.selectedOutcomeName = '';
+    this.selectedOutcomes = [];
+
+    if (this.betCreationMode === 'api') {
+      this.loadOddsEvents();
+    }
+  }
+
   selectOddsEvent(): void {
     const event = this.oddsEvents.find(
       (item) => item.id === this.selectedOddsEventId,
     );
 
     if (!event) {
+      this.selectedMarkets = [];
+      this.selectedOutcomes = [];
       return;
     }
 
     this.form.sport = 'FOOTBALL';
-    this.form.market = 'MATCH_WINNER';
     this.form.eventName = `${event.homeTeam} vs ${event.awayTeam}`;
 
+    this.selectedMarketKey = '';
     this.selectedOutcomeName = '';
+
+    this.selectedMarkets = event.markets || [];
+    this.selectedOutcomes = [];
   }
 
   selectOutcome(): void {
-    const event = this.oddsEvents.find(
-      (item) => item.id === this.selectedOddsEventId,
-    );
-
-    if (!event) {
-      return;
-    }
-
-    const outcome = event.outcomes.find(
+    const outcome = this.selectedOutcomes.find(
       (item: any) => item.name === this.selectedOutcomeName,
     );
 
@@ -105,7 +116,35 @@ export class BetsComponent implements OnInit {
 
     this.form.selection = outcome.name;
     this.form.odds = Number(outcome.price);
+
+    if (this.selectedMarketKey === 'h2h') {
+      this.form.market = 'MATCH_WINNER';
+    }
+
+    if (this.selectedMarketKey === 'totals') {
+      this.form.market = 'OVER_UNDER_GOALS';
+    }
+
+    if (this.selectedMarketKey === 'spreads') {
+      this.form.market = 'ASIAN_HANDICAP';
+    }
   }
+
+  selectMarket(): void {
+    const market = this.selectedMarkets.find(
+      (item) => item.key === this.selectedMarketKey,
+    );
+
+    if (!market) {
+      this.selectedOutcomes = [];
+      return;
+    }
+
+    this.selectedOutcomes = market.outcomes || [];
+
+    this.selectedOutcomeName = '';
+  }
+
 
   loadBets(): void {
     this.betsService.getBets(this.filters).subscribe({
