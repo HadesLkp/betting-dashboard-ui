@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { BetsService } from '../../services/bets.service';
 import { TranslationService } from '../../services/translation.service';
 import Swal from 'sweetalert2';
+import { OddsService } from '../../services/odds.service';
 interface BetForm {
   sport: string;
   eventName: string;
@@ -21,6 +22,9 @@ export class BetsComponent implements OnInit {
   bets: any[] = [];
   isEditing = false;
   editingBetId: number | null = null;
+  oddsEvents: any[] = [];
+  selectedOddsEventId = '';
+  selectedOutcomeName = '';
 
 
 
@@ -44,11 +48,63 @@ export class BetsComponent implements OnInit {
 
   constructor(
     private readonly betsService: BetsService,
+    private readonly oddsService: OddsService,
     private readonly translationService: TranslationService
   ) { }
 
   ngOnInit(): void {
     this.loadBets();
+    this.loadOddsEvents();
+  }
+
+  loadOddsEvents(): void {
+    this.oddsService
+      .getFormattedEvents('soccer_fifa_world_cup')
+      .subscribe({
+        next: (data: any[]) => {
+          this.oddsEvents = data;
+        },
+        error: (error: any) => {
+          console.error(error);
+        },
+      });
+  }
+
+  selectOddsEvent(): void {
+    const event = this.oddsEvents.find(
+      (item) => item.id === this.selectedOddsEventId,
+    );
+
+    if (!event) {
+      return;
+    }
+
+    this.form.sport = 'FOOTBALL';
+    this.form.market = 'MATCH_WINNER';
+    this.form.eventName = `${event.homeTeam} vs ${event.awayTeam}`;
+
+    this.selectedOutcomeName = '';
+  }
+
+  selectOutcome(): void {
+    const event = this.oddsEvents.find(
+      (item) => item.id === this.selectedOddsEventId,
+    );
+
+    if (!event) {
+      return;
+    }
+
+    const outcome = event.outcomes.find(
+      (item: any) => item.name === this.selectedOutcomeName,
+    );
+
+    if (!outcome) {
+      return;
+    }
+
+    this.form.selection = outcome.name;
+    this.form.odds = Number(outcome.price);
   }
 
   loadBets(): void {
