@@ -120,8 +120,10 @@ export class TranslationService {
 
       NO_DATA: 'Sin datos',
       NO_BETS_TO_EXPORT: 'No hay apuestas para exportar.',
+      EVENTS: 'Eventos'
     },
     en: {
+      EVENTS: 'Events',
       DELETE_BET: 'Delete bet?',
       DELETE_BET_TEXT: 'This action cannot be undone.',
 

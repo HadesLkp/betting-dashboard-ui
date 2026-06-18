@@ -9,6 +9,7 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { BetsComponent } from './pages/bets/bets.component';
 import { BankrollComponent } from './pages/bankroll/bankroll.component';
 import { AnalyticsComponent } from './pages/analytics/analytics.component';
+import { EventsComponent } from './pages/events/events.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { AnalyticsComponent } from './pages/analytics/analytics.component';
     DashboardComponent,
     BetsComponent,
     BankrollComponent,
-    AnalyticsComponent
+    AnalyticsComponent,
+    EventsComponent
   ],
   imports: [
     BrowserModule,

@@ -3,30 +3,22 @@
   <h2>{{ t('NEW_BET') }}</h2>
 
   <div class="card p-3 mb-4">
-  <label class="form-label">Origen de apuesta</label>
+    <label class="form-label">Origen de apuesta</label>
 
-  <div>
-    <label class="me-3">
-      <input
-        type="radio"
-        name="betCreationMode"
-        value="manual"
-        [(ngModel)]="betCreationMode"
-        (change)="changeBetCreationMode()">
-      Manual
-    </label>
+    <div>
+      <label class="me-3">
+        <input type="radio" name="betCreationMode" value="manual" [(ngModel)]="betCreationMode"
+          (change)="changeBetCreationMode()">
+        Manual
+      </label>
 
-    <label>
-      <input
-        type="radio"
-        name="betCreationMode"
-        value="api"
-        [(ngModel)]="betCreationMode"
-        (change)="changeBetCreationMode()">
-      Eventos reales
-    </label>
+      <label>
+        <input type="radio" name="betCreationMode" value="api" [(ngModel)]="betCreationMode"
+          (change)="changeBetCreationMode()">
+        Eventos reales
+      </label>
+    </div>
   </div>
-</div>
 
   <div *ngIf="isEditing" class="alert alert-info d-flex justify-content-between align-items-center">
 
@@ -57,42 +49,39 @@
 
       <div class="col-md-6 mb-2" *ngIf="betCreationMode === 'api'">
 
-  <label class="form-label">Mercado</label>
+        <label class="form-label">Mercado</label>
 
-  <select
-    class="form-control"
-    [(ngModel)]="selectedMarketKey"
-    (change)="selectMarket()"
-    [disabled]="!selectedOddsEventId">
-
-    <option value="">Selecciona un mercado</option>
-
-    <option
-      *ngFor="let market of selectedMarkets"
-      [value]="market.key">
-
-      {{ market.key }}
-
-    </option>
-
-  </select>
-
-</div>
-
-      <div class="col-md-6 mb-2" *ngFor="let outcome of selectedOutcomes">
-        <label class="form-label">Selección / Cuota</label>
-        <select class="form-control" [(ngModel)]="selectedOutcomeName" (change)="selectOutcome()"
+        <select class="form-control" [(ngModel)]="selectedMarketKey" (change)="selectMarket()"
           [disabled]="!selectedOddsEventId">
+
+          <option value="">Selecciona un mercado</option>
+
+          <option *ngFor="let market of selectedMarkets" [value]="market.key">
+
+            {{ getOddsMarketLabel(market.key) }}
+
+          </option>
+
+        </select>
+
+      </div>
+
+      <div class="col-md-6 mb-2" *ngIf="betCreationMode === 'api'">
+        <label class="form-label">Selección / Cuota</label>
+
+        <select class="form-control" [(ngModel)]="selectedOutcomeName" (change)="selectOutcome()"
+          [disabled]="!selectedMarketKey">
 
           <option value="">Selecciona una opción</option>
 
           <option *ngFor="let outcome of selectedOutcomes" [value]="outcome.name">
-            {{ outcome.name }} - {{ outcome.price }}
+            {{ outcome.name }} {{ outcome.point }} - {{ outcome.price }}
           </option>
         </select>
       </div>
 
-      <div class="col-md-4 mb-2">
+      <div class="col-md-4 mb-2" *ngIf="betCreationMode === 'manual'">
+        <label class="form-label">{{ t('SELECT_SPORT') }}</label>
         <select class="form-control" [(ngModel)]="form.sport">
 
           <option value="">{{ t('SELECT_SPORT') }}</option>
@@ -107,11 +96,14 @@
         </select>
       </div>
 
-      <div class="col-md-4 mb-2">
+      <div class="col-md-4 mb-2" *ngIf="betCreationMode === 'manual'">
+        <label class="form-label">{{ t('EVENT') }}</label>
         <input class="form-control" [placeholder]="t('EVENT')" [(ngModel)]="form.eventName">
       </div>
 
-      <div class="col-md-4 mb-2">
+      <div class="col-md-4 mb-2" *ngIf="betCreationMode === 'manual'">
+
+        <label class="form-label">{{ t('SELECT_MARKET') }}</label>
         <select class="form-control" [(ngModel)]="form.market">
 
           <option value="">{{ t('SELECT_MARKET') }}</option>
@@ -127,21 +119,78 @@
         </select>
       </div>
 
-      <div class="col-md-4 mb-2">
+      <div class="col-md-4 mb-2" *ngIf="betCreationMode === 'manual'">
+        <label class="form-label">{{ t('SELECTION') }}</label>
         <input class="form-control" [placeholder]="t('SELECTION')" [(ngModel)]="form.selection">
       </div>
 
-      <div class="col-md-2 mb-2">
+      <div class="col-md-2 mb-2" *ngIf="betCreationMode === 'manual'">
+        <label class="form-label">{{ t('ODDS') }}</label>
         <input type="number" class="form-control" [placeholder]="t('ODDS')" [(ngModel)]="form.odds">
       </div>
 
       <div class="col-md-2 mb-2">
-        <input type="number" class="form-control" placeholder="Stake" [(ngModel)]="form.stake">
+        <label class="form-label">{{ t('STAKE') }}</label>
+
+        <input type="number" class="form-control" [(ngModel)]="form.stake">
       </div>
 
       <div class="col-md-4 mb-2">
-        <input type="number" class="form-control" [placeholder]="t('ESTIMATED_PROBABILITY')"
-          [(ngModel)]="form.estimatedProbability">
+        <label class="form-label">
+          {{ t('ESTIMATED_PROBABILITY') }}
+        </label>
+
+        <input type="number" class="form-control" [(ngModel)]="form.estimatedProbability">
+      </div>
+
+      <div class="col-md-12 mt-3" *ngIf="form.odds && form.estimatedProbability">
+        <div class="alert" [ngClass]="isValueBet() ? 'alert-success' : 'alert-danger'">
+
+          <h5>{{ getBetRatingLabel() }}</h5>
+
+          <h4>{{ getBetStars() }}</h4>
+
+          <h5>
+            {{ isValueBet() ? 'Value bet detectada' : 'No hay value bet' }}
+          </h5>
+
+          <p class="mb-1">
+            Probabilidad implícita:
+            {{ getImpliedProbability() | number:'1.2-2' }}%
+          </p>
+
+          <p class="mb-1">
+            Tu probabilidad estimada:
+            {{ form.estimatedProbability | number:'1.2-2' }}%
+          </p>
+
+          <p class="mb-1">
+            Edge:
+            {{ getEdge() > 0 ? '+' : '' }}{{ getEdge() | number:'1.2-2' }}%
+          </p>
+
+          <p class="mb-0">
+            Kelly recomendado:
+            {{ getKellyPercentage() | number:'1.2-2' }}% del bankroll
+          </p>
+
+          <p class="mb-0">
+            Stake recomendado:
+            ${{ getKellyStake() | number:'1.2-2' }}
+          </p>
+
+          <p class="mb-1">
+            EV por unidad:
+            {{ getExpectedValuePerUnit() > 0 ? '+' : '' }}
+            {{ getExpectedValuePerUnit() | number:'1.2-2' }}
+          </p>
+
+          <p class="mb-0" *ngIf="form.stake">
+            EV sobre stake:
+            {{ getExpectedValueForStake() > 0 ? '+' : '' }}${{ getExpectedValueForStake() | number:'1.2-2' }}
+          </p>
+
+        </div>
       </div>
 
       <div class="col-md-12 mt-2">

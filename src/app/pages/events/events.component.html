@@ -1,0 +1,41 @@
+<div class="container mt-4">
+
+  <h2>Upcoming Events</h2>
+
+  <div class="row">
+
+    <div class="col-md-6 mb-3" *ngFor="let event of events">
+
+      <div class="card shadow-sm">
+
+        <div class="card-body">
+
+          <h5>
+            {{ event.homeTeam }}
+            vs
+            {{ event.awayTeam }}
+          </h5>
+
+          <p class="mb-1">
+            <strong>Date:</strong>
+            {{ event.commenceTime | date:'dd/MM/yyyy HH:mm' }}
+          </p>
+
+          <p class="mb-3">
+            <strong>Bookmaker:</strong>
+            {{ event.bookmaker }}
+          </p>
+
+          <button class="btn btn-primary" (click)="goToBet(event)">
+            Apostar
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

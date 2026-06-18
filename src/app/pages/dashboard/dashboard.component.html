@@ -32,10 +32,8 @@
     <div class="col-md-3 mb-3">
       <div class="card p-3 shadow-sm border-0">
         <small class="text-muted">ROI</small>
-        <h3 class="mt-2" [ngClass]="{
-          'text-success': stats.performance.roi > 0,
-          'text-danger': stats.performance.roi < 0
-        }">
+        <h3 class="mt-2"
+          [ngClass]="{'text-success': stats.performance.roi > 0,'text-danger': stats.performance.roi < 0}">
           {{ stats.performance.roi > 0 ? '+' : '' }}{{ stats.performance.roi | number:'1.2-2' }}%
         </h3>
         <span class="text-muted">
@@ -55,6 +53,57 @@
         </span>
       </div>
     </div>
+  </div>
+
+  <div class="card mt-4 p-3">
+
+    <h5>Portfolio</h5>
+
+    <div class="row">
+
+      <div class="col-md-4">
+        <strong>Apuestas abiertas</strong>
+        <div>{{ portfolio?.openBets }}</div>
+      </div>
+
+      <div class="col-md-4">
+        <strong>Stake en riesgo</strong>
+        <div>
+          ${{ portfolio?.pendingStake | number:'1.2-2' }}
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <strong>Ganancia potencial</strong>
+        <div class="text-success">
+          +${{ portfolio?.potentialProfit | number:'1.2-2' }}
+        </div>
+      </div>
+
+      <div class="col-md-4 mt-3">
+        <strong>EV Portfolio</strong>
+        <div [ngClass]="{
+      'text-success': portfolio?.portfolioEv > 0,
+      'text-danger': portfolio?.portfolioEv < 0
+    }">
+          {{ portfolio?.portfolioEv > 0 ? '+' : '' }}${{ portfolio?.portfolioEv | number:'1.2-2' }}
+        </div>
+      </div>
+
+      <div class="col-md-4 mt-3">
+        <strong>Value Bets abiertas</strong>
+        <div>{{ portfolio?.openValueBets }}</div>
+      </div>
+
+    </div>
+
+    <div class="col-md-4 mt-3">
+      <strong>Average Kelly</strong>
+      <div>
+        {{ portfolio?.averageKelly | number:'1.2-2' }}%
+      </div>
+    </div>
+
   </div>
 
   <div class="card mt-4 p-3 shadow-sm border-0">

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -8,9 +9,15 @@ import { Observable } from 'rxjs';
 export class StatsService {
   private readonly apiUrl = 'http://localhost:3000/stats';
 
-  constructor(private readonly http: HttpClient) {}
+  constructor(private readonly http: HttpClient) { }
 
   getStats(): Observable<any> {
     return this.http.get<any>(this.apiUrl);
+  }
+
+  getPortfolio(): Observable<any> {
+    return this.http.get<any>(
+      `${this.apiUrl}/portfolio`,
+    );
   }
 }

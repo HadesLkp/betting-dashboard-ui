@@ -11,6 +11,7 @@ import { TranslationService } from 'src/app/services/translation.service';
 export class DashboardComponent implements OnInit {
   stats: any;
   chart: any;
+  portfolio: any;
 
   constructor(private readonly statsService: StatsService,
     private readonly translationService: TranslationService
@@ -24,6 +25,16 @@ export class DashboardComponent implements OnInit {
     return this.translationService.t(sport);
   }
 
+  loadPortfolio(): void {
+    this.statsService.getPortfolio().subscribe({
+      next: (data) => {
+        this.portfolio = data;
+      },
+      error: (error) => {
+        console.error(error);
+      },
+    });
+  }
 
   createBankrollChart(): void {
     if (!this.stats?.history) {
@@ -63,6 +74,7 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loadPortfolio();
     this.statsService.getStats().subscribe({
       next: (data) => {
         console.log('STATS:', data);

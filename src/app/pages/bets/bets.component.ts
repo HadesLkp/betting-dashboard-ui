@@ -3,6 +3,7 @@ import { BetsService } from '../../services/bets.service';
 import { TranslationService } from '../../services/translation.service';
 import Swal from 'sweetalert2';
 import { OddsService } from '../../services/odds.service';
+import { BankrollService } from '../../services/bankroll.service';
 interface BetForm {
   sport: string;
   eventName: string;
@@ -11,6 +12,9 @@ interface BetForm {
   odds: number | null;
   stake: number | null;
   estimatedProbability: number | null;
+  oddsEventId: string;
+  bookmaker: string;
+  marketKey: string;
 }
 
 @Component({
@@ -29,6 +33,7 @@ export class BetsComponent implements OnInit {
   betCreationMode: 'manual' | 'api' = 'manual';
   selectedMarketKey = '';
   selectedMarkets: any[] = [];
+  bankroll: any
 
   form: BetForm = {
     sport: '',
@@ -38,6 +43,9 @@ export class BetsComponent implements OnInit {
     odds: null,
     stake: null,
     estimatedProbability: null,
+    oddsEventId: '',
+    bookmaker: '',
+    marketKey: '',
   };
 
   filters = {
@@ -51,12 +59,110 @@ export class BetsComponent implements OnInit {
   constructor(
     private readonly betsService: BetsService,
     private readonly oddsService: OddsService,
-    private readonly translationService: TranslationService
+    private readonly translationService: TranslationService,
+    private readonly bankrollService: BankrollService
   ) { }
 
   ngOnInit(): void {
     this.loadBets();
     this.loadOddsEvents();
+    this.loadBankroll();
+
+    const navigation = history.state;
+
+    if (navigation?.oddsEvent) {
+      this.betCreationMode = 'api';
+
+      const event = navigation.oddsEvent;
+
+      this.oddsEvents = [event];
+      this.selectedOddsEventId = event.id;
+
+      this.selectOddsEvent();
+    }
+  }
+
+  loadBankroll(): void {
+    this.bankrollService.getCurrent().subscribe({
+      next: (data) => {
+        this.bankroll = data;
+      },
+      error: (error) => {
+        console.error(error);
+      },
+    });
+  }
+
+  getBetRating(): string {
+  const edge = this.getEdge();
+  const kelly = this.getKellyPercentage();
+
+  if (edge >= 10 && kelly >= 5) {
+    return 'EXCELLENT';
+  }
+
+  if (edge >= 5 && kelly >= 2) {
+    return 'GOOD';
+  }
+
+  if (edge > 0) {
+    return 'AVERAGE';
+  }
+
+  return 'BAD';
+}
+
+getBetRatingLabel(): string {
+  const rating = this.getBetRating();
+
+  const labels: Record<string, string> = {
+    EXCELLENT: '🟢 Excelente apuesta',
+    GOOD: '🟡 Buena apuesta',
+    AVERAGE: '🔵 Value pequeño',
+    BAD: '🔴 Evitar apuesta',
+  };
+
+  return labels[rating];
+}
+
+getBetStars(): string {
+  const rating = this.getBetRating();
+
+  const stars: Record<string, string> = {
+    EXCELLENT: '★★★★★',
+    GOOD: '★★★★☆',
+    AVERAGE: '★★★☆☆',
+    BAD: '★☆☆☆☆',
+  };
+
+  return stars[rating];
+}
+
+getExpectedValuePerUnit(): number {
+  if (!this.form.odds || !this.form.estimatedProbability) {
+    return 0;
+  }
+
+  const odds = Number(this.form.odds);
+  const probability = Number(this.form.estimatedProbability) / 100;
+
+  return probability * (odds - 1) - (1 - probability);
+}
+
+getExpectedValueForStake(): number {
+  if (!this.form.stake) {
+    return 0;
+  }
+
+  return Number(this.form.stake) * this.getExpectedValuePerUnit();
+}
+
+  getKellyStake(): number {
+    if (!this.bankroll?.currentAmount) {
+      return 0;
+    }
+
+    return Number(this.bankroll.currentAmount) * (this.getKellyPercentage() / 100);
   }
 
   loadOddsEvents(): void {
@@ -84,6 +190,42 @@ export class BetsComponent implements OnInit {
     }
   }
 
+  getImpliedProbability(): number {
+    if (!this.form.odds || this.form.odds <= 0) {
+      return 0;
+    }
+
+    return (1 / Number(this.form.odds)) * 100;
+  }
+
+  getEdge(): number {
+    if (!this.form.estimatedProbability) {
+      return 0;
+    }
+
+    return Number(this.form.estimatedProbability) - this.getImpliedProbability();
+  }
+
+  isValueBet(): boolean {
+    return this.getEdge() > 0;
+  }
+
+  getKellyPercentage(): number {
+    if (!this.form.odds || !this.form.estimatedProbability) {
+      return 0;
+    }
+
+    const odds = Number(this.form.odds);
+    const probability = Number(this.form.estimatedProbability) / 100;
+
+    const b = odds - 1;
+    const q = 1 - probability;
+
+    const kelly = (b * probability - q) / b;
+
+    return Math.max(kelly * 100, 0);
+  }
+
   selectOddsEvent(): void {
     const event = this.oddsEvents.find(
       (item) => item.id === this.selectedOddsEventId,
@@ -94,6 +236,9 @@ export class BetsComponent implements OnInit {
       this.selectedOutcomes = [];
       return;
     }
+
+    this.form.oddsEventId = event.id;
+    this.form.bookmaker = event.bookmaker;
 
     this.form.sport = 'FOOTBALL';
     this.form.eventName = `${event.homeTeam} vs ${event.awayTeam}`;
@@ -114,6 +259,7 @@ export class BetsComponent implements OnInit {
       return;
     }
 
+    this.form.marketKey = this.selectedMarketKey;
     this.form.selection = outcome.name;
     this.form.odds = Number(outcome.price);
 
@@ -145,6 +291,15 @@ export class BetsComponent implements OnInit {
     this.selectedOutcomeName = '';
   }
 
+  getOddsMarketLabel(key: string): string {
+    const markets: Record<string, string> = {
+      h2h: this.t('MATCH_WINNER'),
+      totals: this.t('OVER_UNDER_GOALS'),
+      spreads: this.t('ASIAN_HANDICAP'),
+    };
+
+    return markets[key] || key;
+  }
 
   loadBets(): void {
     this.betsService.getBets(this.filters).subscribe({
@@ -173,6 +328,9 @@ export class BetsComponent implements OnInit {
       odds: Number(bet.odds),
       stake: Number(bet.stake),
       estimatedProbability: Number(bet.estimatedProbability),
+      oddsEventId: '',
+      bookmaker: '',
+      marketKey: '',
     };
   }
 
@@ -358,6 +516,9 @@ export class BetsComponent implements OnInit {
       odds: null,
       stake: null,
       estimatedProbability: null,
+      oddsEventId: '',
+      bookmaker: '',
+      marketKey: '',
     };
 
     this.isEditing = false;
