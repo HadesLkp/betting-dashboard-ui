@@ -287,81 +287,85 @@
 
   <h2>{{ t('HISTORY') }}</h2>
 
-  <table class="table table-striped">
+  <div class="col-md-6 mb-2">
+  <button class="btn btn-warning ms-2" (click)="autoSettle()">
+    Sincronizar resultados
+  </button>
+</div>
 
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>{{ t('SPORT') }}</th>
-        <th>{{ t('MARKET') }}</th>
-        <th>{{ t('EVENT') }}</th>
-        <th>{{ t('ODDS') }}</th>
-        <th>{{ t('STAKE') }}</th>
-        <th>{{ t('DATE') }}</th>
-        <th>{{ t('RESULT') }}</th>
-        <th>{{ t('PROFIT') }}</th>
-        <th>{{ t('ACTIONS') }}</th>
-      </tr>
-    </thead>
+<table class="table table-striped">
 
-    <tbody>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>{{ t('SPORT') }}</th>
+      <th>{{ t('MARKET') }}</th>
+      <th>{{ t('EVENT') }}</th>
+      <th>{{ t('ODDS') }}</th>
+      <th>{{ t('STAKE') }}</th>
+      <th>{{ t('DATE') }}</th>
+      <th>{{ t('RESULT') }}</th>
+      <th>{{ t('PROFIT') }}</th>
+      <th>{{ t('ACTIONS') }}</th>
+    </tr>
+  </thead>
 
-      <tr *ngFor="let bet of bets">
+  <tbody>
 
-        <td>{{ bet.id }}</td>
-        <td>{{ getSportLabel(bet.sport) }}</td>
-        <td>{{ getMarketLabel(bet.market) }}</td>
-        <td>{{ bet.eventName }}</td>
-        <td>{{ bet.odds }}</td>
-        <td>{{ bet.stake }}</td>
-        <td>{{ bet.placedAt | date:'dd/MM/yyyy HH:mm' }}</td>
-        <td>
-          <span class="badge" [ngClass]="{
+    <tr *ngFor="let bet of bets">
+
+      <td>{{ bet.id }}</td>
+      <td>{{ getSportLabel(bet.sport) }}</td>
+      <td>{{ getMarketLabel(bet.market) }}</td>
+      <td>{{ bet.eventName }}</td>
+      <td>{{ bet.odds }}</td>
+      <td>{{ bet.stake }}</td>
+      <td>{{ bet.placedAt | date:'dd/MM/yyyy HH:mm' }}</td>
+      <td>
+        <span class="badge" [ngClass]="{
       'bg-success': bet.result === 'win',
       'bg-danger': bet.result === 'loss',
       'bg-secondary': bet.result === 'push',
       'bg-warning text-dark': bet.result === 'pending'}">
-            {{ t(bet.result.toUpperCase()) }}
-          </span>
-        </td>
+          {{ t(bet.result.toUpperCase()) }}
+        </span>
+      </td>
 
-        <td [ngClass]="{
+      <td [ngClass]="{
     'text-success': bet.profit > 0,
     'text-danger': bet.profit < 0
   }">
-          {{ bet.profit }}
-        </td>
+        {{ bet.profit }}
+      </td>
 
-        <td>
+      <td>
 
-          <button *ngIf="bet.result === 'pending'" class="btn btn-success btn-sm me-2"
-            (click)="settleBet(bet.id, 'win')">
-            Win
-          </button>
+        <button *ngIf="bet.result === 'pending'" class="btn btn-success btn-sm me-2" (click)="settleBet(bet.id, 'win')">
+          Win
+        </button>
 
-          <button *ngIf="bet.result === 'pending'" class="btn btn-danger btn-sm me-2"
-            (click)="settleBet(bet.id, 'loss')">
-            Loss
-          </button>
+        <button *ngIf="bet.result === 'pending'" class="btn btn-danger btn-sm me-2" (click)="settleBet(bet.id, 'loss')">
+          Loss
+        </button>
 
-          <button *ngIf="bet.result === 'pending'" class="btn btn-secondary btn-sm" (click)="settleBet(bet.id, 'push')">
-            Push
-          </button>
+        <button *ngIf="bet.result === 'pending'" class="btn btn-secondary btn-sm" (click)="settleBet(bet.id, 'push')">
+          Push
+        </button>
 
-          <button class="btn btn-outline-danger btn-sm ms-2" (click)="deleteBet(bet.id)">
-            {{ t('DELETE') }}
-          </button>
+        <button class="btn btn-outline-danger btn-sm ms-2" (click)="deleteBet(bet.id)">
+          {{ t('DELETE') }}
+        </button>
 
-          <button *ngIf="bet.result === 'pending'" class="btn btn-outline-primary btn-sm ms-2" (click)="editBet(bet)">
-            {{ t('EDIT') }}
-          </button>
+        <button *ngIf="bet.result === 'pending'" class="btn btn-outline-primary btn-sm ms-2" (click)="editBet(bet)">
+          {{ t('EDIT') }}
+        </button>
 
-        </td>
+      </td>
 
-      </tr>
+    </tr>
 
-    </tbody>
+  </tbody>
 
-  </table>
+</table>
 
 </div>

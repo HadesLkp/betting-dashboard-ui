@@ -45,4 +45,8 @@ export class BetsService {
       result,
     });
   }
+
+  autoSettle() {
+    return this.http.post(`${this.apiUrl}/auto-settle`, {});
+  }
 }

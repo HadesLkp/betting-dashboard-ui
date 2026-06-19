@@ -12,6 +12,10 @@ export class DashboardComponent implements OnInit {
   stats: any;
   chart: any;
   portfolio: any;
+  exposureBySport: any = {};
+  exposureByMarket: any = {};
+  exposureBySportList: any[] = [];
+  exposureByMarketList: any[] = [];
 
   constructor(private readonly statsService: StatsService,
     private readonly translationService: TranslationService
@@ -25,10 +29,24 @@ export class DashboardComponent implements OnInit {
     return this.translationService.t(sport);
   }
 
+  getMarketLabel(market: string): string {
+    return this.translationService.t(market);
+  }
+
   loadPortfolio(): void {
     this.statsService.getPortfolio().subscribe({
       next: (data) => {
         this.portfolio = data;
+
+        this.exposureBySportList = Object.keys(data.exposureBySport || {}).map((key) => ({
+          key,
+          value: data.exposureBySport[key],
+        }));
+
+        this.exposureByMarketList = Object.keys(data.exposureByMarket || {}).map((key) => ({
+          key,
+          value: data.exposureByMarket[key],
+        }));
       },
       error: (error) => {
         console.error(error);

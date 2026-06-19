@@ -8,8 +8,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./events.component.scss'],
 })
 export class EventsComponent implements OnInit {
-
   events: any[] = [];
+  searchTerm = '';
+  selectedLeague = 'soccer_fifa_world_cup';
 
   constructor(
     private readonly oddsService: OddsService,
@@ -33,11 +34,50 @@ export class EventsComponent implements OnInit {
       });
   }
 
+  get filteredEvents(): any[] {
+    const term = this.searchTerm.toLowerCase().trim();
+
+    if (!term) {
+      return this.events;
+    }
+
+    return this.events.filter((event) => {
+      const matchName = `${event.homeTeam} ${event.awayTeam}`.toLowerCase();
+
+      return matchName.includes(term);
+    });
+  }
+
   goToBet(event: any): void {
-  this.router.navigate(['/bets'], {
-    state: {
-      oddsEvent: event,
-    },
-  });
+    this.router.navigate(['/bets'], {
+      state: {
+        oddsEvent: event,
+      },
+    });
+  }
+
+  getTeamFlag(team: string): string {
+  const flags: Record<string, string> = {
+    USA: '🇺🇸',
+    'United States': '🇺🇸',
+    Australia: '🇦🇺',
+    Scotland: '🏴',
+    Morocco: '🇲🇦',
+    Brazil: '🇧🇷',
+    Haiti: '🇭🇹',
+    Portugal: '🇵🇹',
+    'DR Congo': '🇨🇩',
+    England: '🏴',
+    Croatia: '🇭🇷',
+    Canada: '🇨🇦',
+    Qatar: '🇶🇦',
+    Spain: '🇪🇸',
+    Colombia: '🇨🇴',
+    Argentina: '🇦🇷',
+    Germany: '🇩🇪',
+    France: '🇫🇷',
+  };
+
+  return flags[team] || '⚽';
 }
 }

@@ -94,68 +94,68 @@ export class BetsComponent implements OnInit {
   }
 
   getBetRating(): string {
-  const edge = this.getEdge();
-  const kelly = this.getKellyPercentage();
+    const edge = this.getEdge();
+    const kelly = this.getKellyPercentage();
 
-  if (edge >= 10 && kelly >= 5) {
-    return 'EXCELLENT';
+    if (edge >= 10 && kelly >= 5) {
+      return 'EXCELLENT';
+    }
+
+    if (edge >= 5 && kelly >= 2) {
+      return 'GOOD';
+    }
+
+    if (edge > 0) {
+      return 'AVERAGE';
+    }
+
+    return 'BAD';
   }
 
-  if (edge >= 5 && kelly >= 2) {
-    return 'GOOD';
+  getBetRatingLabel(): string {
+    const rating = this.getBetRating();
+
+    const labels: Record<string, string> = {
+      EXCELLENT: '🟢 Excelente apuesta',
+      GOOD: '🟡 Buena apuesta',
+      AVERAGE: '🔵 Value pequeño',
+      BAD: '🔴 Evitar apuesta',
+    };
+
+    return labels[rating];
   }
 
-  if (edge > 0) {
-    return 'AVERAGE';
+  getBetStars(): string {
+    const rating = this.getBetRating();
+
+    const stars: Record<string, string> = {
+      EXCELLENT: '★★★★★',
+      GOOD: '★★★★☆',
+      AVERAGE: '★★★☆☆',
+      BAD: '★☆☆☆☆',
+    };
+
+    return stars[rating];
   }
 
-  return 'BAD';
-}
+  getExpectedValuePerUnit(): number {
+    if (!this.form.odds || !this.form.estimatedProbability) {
+      return 0;
+    }
 
-getBetRatingLabel(): string {
-  const rating = this.getBetRating();
+    const odds = Number(this.form.odds);
+    const probability = Number(this.form.estimatedProbability) / 100;
 
-  const labels: Record<string, string> = {
-    EXCELLENT: '🟢 Excelente apuesta',
-    GOOD: '🟡 Buena apuesta',
-    AVERAGE: '🔵 Value pequeño',
-    BAD: '🔴 Evitar apuesta',
-  };
-
-  return labels[rating];
-}
-
-getBetStars(): string {
-  const rating = this.getBetRating();
-
-  const stars: Record<string, string> = {
-    EXCELLENT: '★★★★★',
-    GOOD: '★★★★☆',
-    AVERAGE: '★★★☆☆',
-    BAD: '★☆☆☆☆',
-  };
-
-  return stars[rating];
-}
-
-getExpectedValuePerUnit(): number {
-  if (!this.form.odds || !this.form.estimatedProbability) {
-    return 0;
+    return probability * (odds - 1) - (1 - probability);
   }
 
-  const odds = Number(this.form.odds);
-  const probability = Number(this.form.estimatedProbability) / 100;
+  getExpectedValueForStake(): number {
+    if (!this.form.stake) {
+      return 0;
+    }
 
-  return probability * (odds - 1) - (1 - probability);
-}
-
-getExpectedValueForStake(): number {
-  if (!this.form.stake) {
-    return 0;
+    return Number(this.form.stake) * this.getExpectedValuePerUnit();
   }
-
-  return Number(this.form.stake) * this.getExpectedValuePerUnit();
-}
 
   getKellyStake(): number {
     if (!this.bankroll?.currentAmount) {
@@ -188,6 +188,29 @@ getExpectedValueForStake(): number {
     if (this.betCreationMode === 'api') {
       this.loadOddsEvents();
     }
+  }
+
+  autoSettle(): void {
+    this.betsService.autoSettle().subscribe({
+      next: (response: any) => {
+        Swal.fire({
+          title: 'Resultados sincronizados',
+          text: `Revisadas: ${response.checked}. Actualizadas: ${response.settled}.`,
+          icon: 'success',
+        });
+
+        this.loadBets();
+      },
+      error: (error) => {
+        console.error(error);
+
+        Swal.fire({
+          title: this.t('ERROR'),
+          text: 'No fue posible sincronizar resultados.',
+          icon: 'error',
+        });
+      },
+    });
   }
 
   getImpliedProbability(): number {

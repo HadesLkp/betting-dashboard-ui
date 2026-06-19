@@ -1,0 +1,205 @@
+.events-page {
+  min-height: 100vh;
+  padding: 32px;
+  background: #07111f;
+  color: #f8fafc;
+}
+
+.events-title {
+  font-size: 34px;
+  font-weight: 700;
+  margin-bottom: 28px;
+}
+
+.events-toolbar {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 28px;
+}
+
+.league-filter,
+.search-box {
+  height: 58px;
+  border: 1px solid #26384f;
+  background: #0b1626;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  color: #f8fafc;
+}
+
+.league-filter {
+  width: 310px;
+  padding: 0 22px;
+  gap: 14px;
+  justify-content: space-between;
+}
+
+.filter-icon {
+  color: #facc15;
+}
+
+.filter-arrow {
+  color: #94a3b8;
+  margin-left: auto;
+}
+
+.search-box {
+  flex: 1;
+  padding: 0 22px;
+  gap: 16px;
+}
+
+.search-box input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #f8fafc;
+  font-size: 18px;
+}
+
+.search-box input::placeholder {
+  color: #64748b;
+}
+
+.event-card {
+  min-height: 122px;
+  border: 1px solid #203149;
+  background: linear-gradient(90deg, #0b1626, #0d1b2e);
+  border-radius: 12px;
+  padding: 24px 28px;
+  margin-bottom: 14px;
+  display: grid;
+  grid-template-columns: 250px 1px 1fr 140px;
+  align-items: center;
+  gap: 28px;
+}
+
+.event-meta {
+  color: #a8b3c7;
+  font-size: 16px;
+}
+
+.meta-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 9px;
+}
+
+.meta-icon {
+  width: 20px;
+  text-align: center;
+}
+
+.event-divider {
+  height: 82px;
+  background: #26384f;
+}
+
+.event-match {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 80px;
+}
+
+.team:first-child {
+  justify-content: flex-end;
+}
+
+.league-select-wrapper {
+  position: relative;
+  width: 310px;
+}
+
+.league-select {
+  width: 100%;
+  height: 58px;
+
+  border: 1px solid #26384f;
+  background: #0b1626;
+  color: #f8fafc;
+
+  border-radius: 10px;
+
+  padding: 0 50px 0 18px;
+
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.league-arrow {
+  position: absolute;
+
+  right: 18px; /* aquí controlas exactamente la posición */
+
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  pointer-events: none;
+
+  color: #94a3b8;
+
+  font-size: 18px;
+}
+
+.team:last-child {
+  justify-content: flex-start;
+}
+
+.vs-text {
+  text-align: center;
+}
+
+team {
+  min-width: 220px;
+}
+
+.team-flag {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  background: #111827;
+  border: 1px solid #334155;
+}
+
+.team-name {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.vs-text {
+  color: #94a3b8;
+  font-weight: 600;
+  text-align: center;
+}
+
+.bet-button {
+  height: 50px;
+  border: 1px solid #3b82f6;
+  background: transparent;
+  color: #3b82f6;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.bet-button:hover {
+  background: #2563eb;
+  color: white;
+}
+
+.empty-events {
+  padding: 18px;
+  border-radius: 10px;
+  background: #0b1626;
+  color: #cbd5e1;
+}

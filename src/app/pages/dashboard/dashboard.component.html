@@ -106,6 +106,28 @@
 
   </div>
 
+  <div class="card p-3 mb-3">
+    <h5>Exposición por deporte</h5>
+
+    <div *ngFor="let item of exposureBySportList">
+      <div class="d-flex justify-content-between">
+        <span>{{ getSportLabel(item.key.toString()) }}</span>
+        <strong>${{ item.value }}</strong>
+      </div>
+    </div>
+  </div>
+
+  <div class="card p-3 mb-3">
+    <h5>Exposición por mercado</h5>
+
+    <div *ngFor="let item of exposureByMarketList">
+      <div class="d-flex justify-content-between">
+        <span>{{ getMarketLabel(item.key.toString()) }}</span>
+        <strong>${{ item.value }}</strong>
+      </div>
+    </div>
+  </div>
+
   <div class="card mt-4 p-3 shadow-sm border-0">
     <h5>{{ t('BANKROLL_EVOLUTION') }}</h5>
 
