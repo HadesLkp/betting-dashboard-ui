@@ -80,6 +80,27 @@ export class BetsComponent implements OnInit {
 
       this.selectOddsEvent();
     }
+
+    if (navigation?.oddsEvent) {
+      this.betCreationMode = 'api';
+
+      const event = navigation.oddsEvent;
+
+      this.oddsEvents = [event];
+      this.selectedOddsEventId = event.id;
+
+      this.selectOddsEvent();
+
+      if (navigation.selectedMarketKey) {
+        this.selectedMarketKey = navigation.selectedMarketKey;
+        this.selectMarket();
+      }
+
+      if (navigation.selectedOutcomeName) {
+        this.selectedOutcomeName = navigation.selectedOutcomeName;
+        this.selectOutcome();
+      }
+    }
   }
 
   loadBankroll(): void {
@@ -95,31 +116,35 @@ export class BetsComponent implements OnInit {
 
   getBetRating(): string {
     const edge = this.getEdge();
-    const kelly = this.getKellyPercentage();
 
-    if (edge >= 10 && kelly >= 5) {
-      return 'EXCELLENT';
+    if (edge <= 0) {
+      return 'NO_VALUE';
     }
 
-    if (edge >= 5 && kelly >= 2) {
+    if (edge < 2) {
+      return 'SMALL';
+    }
+
+    if (edge < 5) {
       return 'GOOD';
     }
 
-    if (edge > 0) {
-      return 'AVERAGE';
+    if (edge < 10) {
+      return 'VERY_GOOD';
     }
 
-    return 'BAD';
+    return 'PREMIUM';
   }
 
   getBetRatingLabel(): string {
     const rating = this.getBetRating();
 
     const labels: Record<string, string> = {
-      EXCELLENT: '🟢 Excelente apuesta',
-      GOOD: '🟡 Buena apuesta',
-      AVERAGE: '🔵 Value pequeño',
-      BAD: '🔴 Evitar apuesta',
+      NO_VALUE: '⚪ Sin valor',
+      SMALL: '🟡 Value pequeño',
+      GOOD: '🟢 Buena value bet',
+      VERY_GOOD: '🔵 Value alta',
+      PREMIUM: '🔥 Value premium',
     };
 
     return labels[rating];
@@ -129,10 +154,11 @@ export class BetsComponent implements OnInit {
     const rating = this.getBetRating();
 
     const stars: Record<string, string> = {
-      EXCELLENT: '★★★★★',
-      GOOD: '★★★★☆',
-      AVERAGE: '★★★☆☆',
-      BAD: '★☆☆☆☆',
+      NO_VALUE: '☆☆☆☆☆',
+      SMALL: '★★☆☆☆',
+      GOOD: '★★★☆☆',
+      VERY_GOOD: '★★★★☆',
+      PREMIUM: '★★★★★',
     };
 
     return stars[rating];
@@ -213,6 +239,20 @@ export class BetsComponent implements OnInit {
     });
   }
 
+  suggestEstimatedProbability(): void {
+    if (!this.form.odds || this.form.odds <= 0) {
+      return;
+    }
+
+    const impliedProbability = (1 / Number(this.form.odds)) * 100;
+
+    const suggestedProbability = impliedProbability;
+
+    this.form.estimatedProbability = Number(
+      suggestedProbability.toFixed(2),
+    );
+  }
+
   getImpliedProbability(): number {
     if (!this.form.odds || this.form.odds <= 0) {
       return 0;
@@ -285,6 +325,7 @@ export class BetsComponent implements OnInit {
     this.form.marketKey = this.selectedMarketKey;
     this.form.selection = outcome.name;
     this.form.odds = Number(outcome.price);
+    this.form.estimatedProbability = null;
 
     if (this.selectedMarketKey === 'h2h') {
       this.form.market = 'MATCH_WINNER';

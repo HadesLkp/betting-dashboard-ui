@@ -15,7 +15,7 @@ export class EventsComponent implements OnInit {
   constructor(
     private readonly oddsService: OddsService,
     private readonly router: Router,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadEvents();
@@ -56,28 +56,35 @@ export class EventsComponent implements OnInit {
     });
   }
 
-  getTeamFlag(team: string): string {
-  const flags: Record<string, string> = {
-    USA: '🇺🇸',
-    'United States': '🇺🇸',
-    Australia: '🇦🇺',
-    Scotland: '🏴',
-    Morocco: '🇲🇦',
-    Brazil: '🇧🇷',
-    Haiti: '🇭🇹',
-    Portugal: '🇵🇹',
-    'DR Congo': '🇨🇩',
-    England: '🏴',
-    Croatia: '🇭🇷',
-    Canada: '🇨🇦',
-    Qatar: '🇶🇦',
-    Spain: '🇪🇸',
-    Colombia: '🇨🇴',
-    Argentina: '🇦🇷',
-    Germany: '🇩🇪',
-    France: '🇫🇷',
-  };
+  viewEvent(event: any): void {
+    this.router.navigate([
+      '/events',
+      event.id,
+    ]);
+  }
 
-  return flags[team] || '⚽';
-}
+  getTeamFlag(team: string): string {
+    const flags: Record<string, string> = {
+      USA: '🇺🇸',
+      'United States': '🇺🇸',
+      Australia: '🇦🇺',
+      Scotland: '🏴',
+      Morocco: '🇲🇦',
+      Brazil: '🇧🇷',
+      Haiti: '🇭🇹',
+      Portugal: '🇵🇹',
+      'DR Congo': '🇨🇩',
+      England: '🏴',
+      Croatia: '🇭🇷',
+      Canada: '🇨🇦',
+      Qatar: '🇶🇦',
+      Spain: '🇪🇸',
+      Colombia: '🇨🇴',
+      Argentina: '🇦🇷',
+      Germany: '🇩🇪',
+      France: '🇫🇷',
+    };
+
+    return flags[team] || '⚽';
+  }
 }

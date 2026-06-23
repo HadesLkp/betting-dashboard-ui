@@ -104,6 +104,24 @@
       </div>
     </div>
 
+    <div class="col-md-4 mt-3">
+      <strong>Riesgo del portfolio</strong>
+
+      <div [ngClass]="{
+      'text-success': portfolio?.riskLevel === 'LOW',
+      'text-warning': portfolio?.riskLevel === 'MEDIUM',
+      'text-danger': portfolio?.riskLevel === 'HIGH'
+    }">
+
+        {{ portfolio?.riskPercentage | number:'1.2-2' }}%
+
+        <span *ngIf="portfolio?.riskLevel === 'LOW'">🟢 Bajo</span>
+        <span *ngIf="portfolio?.riskLevel === 'MEDIUM'">🟡 Medio</span>
+        <span *ngIf="portfolio?.riskLevel === 'HIGH'">🔴 Alto</span>
+
+      </div>
+    </div>
+
   </div>
 
   <div class="card p-3 mb-3">

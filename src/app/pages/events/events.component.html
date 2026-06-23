@@ -69,9 +69,21 @@
 
     </div>
 
-    <button class="bet-button" (click)="goToBet(event)">
-      Apostar
-    </button>
+    <div class="event-actions">
+
+  <button
+    class="btn btn-outline-info"
+    (click)="viewEvent(event)">
+    Ver detalle
+  </button>
+
+  <button
+    class="bet-button"
+    (click)="goToBet(event)">
+    Apostar
+  </button>
+
+</div>
 
   </div>
 

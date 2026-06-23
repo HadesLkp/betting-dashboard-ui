@@ -6,6 +6,7 @@ import { BetsComponent } from './pages/bets/bets.component';
 import { BankrollComponent } from './pages/bankroll/bankroll.component';
 import { AnalyticsComponent } from './pages/analytics/analytics.component';
 import { EventsComponent } from './pages/events/events.component';
+import { EventDetailComponent } from './pages/event-detail/event-detail.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent },
@@ -13,6 +14,10 @@ const routes: Routes = [
   { path: 'bankroll', component: BankrollComponent },
   { path: 'analytics', component: AnalyticsComponent },
   { path: 'events', component: EventsComponent },
+  {
+  path: 'events/:id',
+  component: EventDetailComponent,
+  },
 ];
 
 @NgModule({

@@ -80,68 +80,82 @@
         </select>
       </div>
 
-      <div class="col-md-4 mb-2" *ngIf="betCreationMode === 'manual'">
-        <label class="form-label">{{ t('SELECT_SPORT') }}</label>
-        <select class="form-control" [(ngModel)]="form.sport">
+        <div class="col-md-4 mb-2" *ngIf="betCreationMode === 'manual'">
+          <label class="form-label">{{ t('SELECT_SPORT') }}</label>
+          <select class="form-control" [(ngModel)]="form.sport">
 
-          <option value="">{{ t('SELECT_SPORT') }}</option>
-          <option value="FOOTBALL">{{ t('FOOTBALL') }}</option>
-          <option value="BASKETBALL">{{ t('BASKETBALL') }}</option>
-          <option value="TENNIS">{{ t('TENNIS') }}</option>
-          <option value="BASEBALL">{{ t('BASEBALL') }}</option>
-          <option value="ESPORTS">{{ t('ESPORTS') }}</option>
-          <option value="MMA">{{ t('MMA') }}</option>
-          <option value="BOXING">{{ t('BOXING') }}</option>
+            <option value="">{{ t('SELECT_SPORT') }}</option>
+            <option value="FOOTBALL">{{ t('FOOTBALL') }}</option>
+            <option value="BASKETBALL">{{ t('BASKETBALL') }}</option>
+            <option value="TENNIS">{{ t('TENNIS') }}</option>
+            <option value="BASEBALL">{{ t('BASEBALL') }}</option>
+            <option value="ESPORTS">{{ t('ESPORTS') }}</option>
+            <option value="MMA">{{ t('MMA') }}</option>
+            <option value="BOXING">{{ t('BOXING') }}</option>
 
-        </select>
-      </div>
+          </select>
+        </div>
 
-      <div class="col-md-4 mb-2" *ngIf="betCreationMode === 'manual'">
-        <label class="form-label">{{ t('EVENT') }}</label>
-        <input class="form-control" [placeholder]="t('EVENT')" [(ngModel)]="form.eventName">
-      </div>
+        <div class="col-md-4 mb-2" *ngIf="betCreationMode === 'manual'">
+          <label class="form-label">{{ t('EVENT') }}</label>
+          <input class="form-control" [placeholder]="t('EVENT')" [(ngModel)]="form.eventName">
+        </div>
 
-      <div class="col-md-4 mb-2" *ngIf="betCreationMode === 'manual'">
+        <div class="col-md-4 mb-2" *ngIf="betCreationMode === 'manual'">
 
-        <label class="form-label">{{ t('SELECT_MARKET') }}</label>
-        <select class="form-control" [(ngModel)]="form.market">
+          <label class="form-label">{{ t('SELECT_MARKET') }}</label>
+          <select class="form-control" [(ngModel)]="form.market">
 
-          <option value="">{{ t('SELECT_MARKET') }}</option>
-          <option value="MATCH_WINNER">{{ t('MATCH_WINNER') }}</option>
-          <option value="OVER_UNDER_GOALS">{{ t('OVER_UNDER_GOALS') }}</option>
-          <option value="BTTS">{{ t('BTTS') }}</option>
-          <option value="DOUBLE_CHANCE">{{ t('DOUBLE_CHANCE') }}</option>
-          <option value="DRAW_NO_BET">{{ t('DRAW_NO_BET') }}</option>
-          <option value="ASIAN_HANDICAP">{{ t('ASIAN_HANDICAP') }}</option>
-          <option value="FIRST_HALF_WINNER">{{ t('FIRST_HALF_WINNER') }}</option>
-          <option value="CORRECT_SCORE">{{ t('CORRECT_SCORE') }}</option>
+            <option value="">{{ t('SELECT_MARKET') }}</option>
+            <option value="MATCH_WINNER">{{ t('MATCH_WINNER') }}</option>
+            <option value="OVER_UNDER_GOALS">{{ t('OVER_UNDER_GOALS') }}</option>
+            <option value="BTTS">{{ t('BTTS') }}</option>
+            <option value="DOUBLE_CHANCE">{{ t('DOUBLE_CHANCE') }}</option>
+            <option value="DRAW_NO_BET">{{ t('DRAW_NO_BET') }}</option>
+            <option value="ASIAN_HANDICAP">{{ t('ASIAN_HANDICAP') }}</option>
+            <option value="FIRST_HALF_WINNER">{{ t('FIRST_HALF_WINNER') }}</option>
+            <option value="CORRECT_SCORE">{{ t('CORRECT_SCORE') }}</option>
 
-        </select>
-      </div>
+          </select>
+        </div>
+        <div class="col-md-4 mb-2" *ngIf="betCreationMode === 'manual'">
+          <label class="form-label">{{ t('SELECTION') }}</label>
+          <input class="form-control" [placeholder]="t('SELECTION')" [(ngModel)]="form.selection">
+        </div>
 
-      <div class="col-md-4 mb-2" *ngIf="betCreationMode === 'manual'">
-        <label class="form-label">{{ t('SELECTION') }}</label>
-        <input class="form-control" [placeholder]="t('SELECTION')" [(ngModel)]="form.selection">
-      </div>
+        <div class="col-md-2 mb-2" *ngIf="betCreationMode === 'manual'">
+          <label class="form-label">{{ t('ODDS') }}</label>
+          <input type="number" class="form-control" [placeholder]="t('ODDS')" [(ngModel)]="form.odds">
+        </div>
 
-      <div class="col-md-2 mb-2" *ngIf="betCreationMode === 'manual'">
-        <label class="form-label">{{ t('ODDS') }}</label>
-        <input type="number" class="form-control" [placeholder]="t('ODDS')" [(ngModel)]="form.odds">
-      </div>
+        <div class="col-md-2 mb-2">
+          <label class="form-label">{{ t('STAKE') }}</label>
 
-      <div class="col-md-2 mb-2">
-        <label class="form-label">{{ t('STAKE') }}</label>
+          <input type="number" class="form-control" [(ngModel)]="form.stake">
+        </div>
+        <div class="w-100"></div>
 
-        <input type="number" class="form-control" [(ngModel)]="form.stake">
-      </div>
+        <div class="col-md-3 mb-2">
+          <label class="form-label">
+            Probabilidad implícita
+          </label>
 
-      <div class="col-md-4 mb-2">
-        <label class="form-label">
-          {{ t('ESTIMATED_PROBABILITY') }}
-        </label>
+          <input class="form-control" [value]="getImpliedProbability() | number:'1.2-2'" readonly>
+        </div>
 
-        <input type="number" class="form-control" [(ngModel)]="form.estimatedProbability">
-      </div>
+        <div class="col-md-4 mb-2">
+          <label class="form-label">
+            {{ t('ESTIMATED_PROBABILITY') }}
+          </label>
+
+          <input type="number" class="form-control" [(ngModel)]="form.estimatedProbability">
+        </div>
+
+        <small class="text-muted">
+          Tu estimación de acierto. Si supera la probabilidad implícita,
+          puede existir una Value Bet.
+        </small>
+     
 
       <div class="col-md-12 mt-3" *ngIf="form.odds && form.estimatedProbability">
         <div class="alert" [ngClass]="isValueBet() ? 'alert-success' : 'alert-danger'">
@@ -163,6 +177,22 @@
             Tu probabilidad estimada:
             {{ form.estimatedProbability | number:'1.2-2' }}%
           </p>
+
+          <div class="mt-2" *ngIf="form.estimatedProbability && getImpliedProbability()">
+
+            <span class="badge bg-success" *ngIf="form.estimatedProbability > getImpliedProbability()">
+
+              ✅ Value Bet
+
+            </span>
+
+            <span class="badge bg-danger" *ngIf="form.estimatedProbability <= getImpliedProbability()">
+
+              ❌ No Value
+
+            </span>
+
+          </div>
 
           <p class="mb-1">
             Edge:
@@ -288,84 +318,86 @@
   <h2>{{ t('HISTORY') }}</h2>
 
   <div class="col-md-6 mb-2">
-  <button class="btn btn-warning ms-2" (click)="autoSettle()">
-    Sincronizar resultados
-  </button>
-</div>
+    <button class="btn btn-warning ms-2" (click)="autoSettle()">
+      Sincronizar resultados
+    </button>
+  </div>
 
-<table class="table table-striped">
+  <table class="table table-striped">
 
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>{{ t('SPORT') }}</th>
-      <th>{{ t('MARKET') }}</th>
-      <th>{{ t('EVENT') }}</th>
-      <th>{{ t('ODDS') }}</th>
-      <th>{{ t('STAKE') }}</th>
-      <th>{{ t('DATE') }}</th>
-      <th>{{ t('RESULT') }}</th>
-      <th>{{ t('PROFIT') }}</th>
-      <th>{{ t('ACTIONS') }}</th>
-    </tr>
-  </thead>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>{{ t('SPORT') }}</th>
+        <th>{{ t('MARKET') }}</th>
+        <th>{{ t('EVENT') }}</th>
+        <th>{{ t('ODDS') }}</th>
+        <th>{{ t('STAKE') }}</th>
+        <th>{{ t('DATE') }}</th>
+        <th>{{ t('RESULT') }}</th>
+        <th>{{ t('PROFIT') }}</th>
+        <th>{{ t('ACTIONS') }}</th>
+      </tr>
+    </thead>
 
-  <tbody>
+    <tbody>
 
-    <tr *ngFor="let bet of bets">
+      <tr *ngFor="let bet of bets">
 
-      <td>{{ bet.id }}</td>
-      <td>{{ getSportLabel(bet.sport) }}</td>
-      <td>{{ getMarketLabel(bet.market) }}</td>
-      <td>{{ bet.eventName }}</td>
-      <td>{{ bet.odds }}</td>
-      <td>{{ bet.stake }}</td>
-      <td>{{ bet.placedAt | date:'dd/MM/yyyy HH:mm' }}</td>
-      <td>
-        <span class="badge" [ngClass]="{
+        <td>{{ bet.id }}</td>
+        <td>{{ getSportLabel(bet.sport) }}</td>
+        <td>{{ getMarketLabel(bet.market) }}</td>
+        <td>{{ bet.eventName }}</td>
+        <td>{{ bet.odds }}</td>
+        <td>{{ bet.stake }}</td>
+        <td>{{ bet.placedAt | date:'dd/MM/yyyy HH:mm' }}</td>
+        <td>
+          <span class="badge" [ngClass]="{
       'bg-success': bet.result === 'win',
       'bg-danger': bet.result === 'loss',
       'bg-secondary': bet.result === 'push',
       'bg-warning text-dark': bet.result === 'pending'}">
-          {{ t(bet.result.toUpperCase()) }}
-        </span>
-      </td>
+            {{ t(bet.result.toUpperCase()) }}
+          </span>
+        </td>
 
-      <td [ngClass]="{
+        <td [ngClass]="{
     'text-success': bet.profit > 0,
     'text-danger': bet.profit < 0
   }">
-        {{ bet.profit }}
-      </td>
+          {{ bet.profit }}
+        </td>
 
-      <td>
+        <td>
 
-        <button *ngIf="bet.result === 'pending'" class="btn btn-success btn-sm me-2" (click)="settleBet(bet.id, 'win')">
-          Win
-        </button>
+          <button *ngIf="bet.result === 'pending'" class="btn btn-success btn-sm me-2"
+            (click)="settleBet(bet.id, 'win')">
+            Win
+          </button>
 
-        <button *ngIf="bet.result === 'pending'" class="btn btn-danger btn-sm me-2" (click)="settleBet(bet.id, 'loss')">
-          Loss
-        </button>
+          <button *ngIf="bet.result === 'pending'" class="btn btn-danger btn-sm me-2"
+            (click)="settleBet(bet.id, 'loss')">
+            Loss
+          </button>
 
-        <button *ngIf="bet.result === 'pending'" class="btn btn-secondary btn-sm" (click)="settleBet(bet.id, 'push')">
-          Push
-        </button>
+          <button *ngIf="bet.result === 'pending'" class="btn btn-secondary btn-sm" (click)="settleBet(bet.id, 'push')">
+            Push
+          </button>
 
-        <button class="btn btn-outline-danger btn-sm ms-2" (click)="deleteBet(bet.id)">
-          {{ t('DELETE') }}
-        </button>
+          <button class="btn btn-outline-danger btn-sm ms-2" (click)="deleteBet(bet.id)">
+            {{ t('DELETE') }}
+          </button>
 
-        <button *ngIf="bet.result === 'pending'" class="btn btn-outline-primary btn-sm ms-2" (click)="editBet(bet)">
-          {{ t('EDIT') }}
-        </button>
+          <button *ngIf="bet.result === 'pending'" class="btn btn-outline-primary btn-sm ms-2" (click)="editBet(bet)">
+            {{ t('EDIT') }}
+          </button>
 
-      </td>
+        </td>
 
-    </tr>
+      </tr>
 
-  </tbody>
+    </tbody>
 
-</table>
+  </table>
 
 </div>

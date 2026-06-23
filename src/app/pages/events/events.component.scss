@@ -159,6 +159,11 @@ team {
   min-width: 220px;
 }
 
+.event-actions {
+  display: flex;
+  gap: 10px;
+}
+
 .team-flag {
   width: 34px;
   height: 34px;

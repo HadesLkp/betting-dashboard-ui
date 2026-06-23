@@ -1,0 +1,75 @@
+<div class="container mt-4" *ngIf="event">
+
+  <button class="btn btn-outline-secondary mb-3" routerLink="/events">
+    ← Volver a eventos
+  </button>
+
+  <div class="event-header mb-4">
+
+  <div class="team-title">
+    <span class="team-flag">{{ getTeamFlag(event.homeTeam) }}</span>
+    <span>{{ event.homeTeam }}</span>
+  </div>
+
+  <span class="vs-title">vs</span>
+
+  <div class="team-title">
+    <span class="team-flag">{{ getTeamFlag(event.awayTeam) }}</span>
+    <span>{{ event.awayTeam }}</span>
+  </div>
+
+</div>
+
+  <hr>
+
+  <p>
+    <strong>Competición:</strong>
+    FIFA World Cup
+  </p>
+
+  <p>
+    <strong>Fecha:</strong>
+    {{ event.commenceTime | date:'dd/MM/yyyy HH:mm' }}
+  </p>
+
+  <p>
+    <strong>Bookmaker:</strong>
+    {{ event.bookmaker }}
+  </p>
+
+  <h4 class="mt-4">
+    Mercados disponibles
+  </h4>
+
+  <div class="card p-3 mb-3" *ngFor="let market of event.markets">
+
+    <h5>
+      {{ getMarketLabel(market.key) }}
+    </h5>
+
+    <div class="row">
+
+      <div class="col-md-4 mb-2" *ngFor="let outcome of market.outcomes">
+
+        <div class="border rounded p-3 d-flex justify-content-between outcome-card"
+          (click)="selectOutcome(market, outcome)">
+          <span>
+            {{ getOutcomeLabel(outcome) }}
+          </span>
+
+          <strong>
+            {{ outcome.price }}
+          </strong>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <p class="text-muted">
+    Haz click en una cuota para crear una apuesta con esos datos.
+  </p>
+
+</div>
