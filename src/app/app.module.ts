@@ -11,6 +11,10 @@ import { BankrollComponent } from './pages/bankroll/bankroll.component';
 import { AnalyticsComponent } from './pages/analytics/analytics.component';
 import { EventsComponent } from './pages/events/events.component';
 import { EventDetailComponent } from './pages/event-detail/event-detail.component';
+import { LoginComponent } from './pages/login/login.component';
+
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -20,7 +24,8 @@ import { EventDetailComponent } from './pages/event-detail/event-detail.componen
     BankrollComponent,
     AnalyticsComponent,
     EventsComponent,
-    EventDetailComponent
+    EventDetailComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -28,7 +33,11 @@ import { EventDetailComponent } from './pages/event-detail/event-detail.componen
     HttpClientModule,
     FormsModule
   ],
-  providers: [],
+  providers: [{
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthInterceptor,
+    multi: true,
+  },],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

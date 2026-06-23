@@ -4,7 +4,7 @@
   </a>
 
   <div class="navbar-nav">
-    <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+    <a class="nav-link" routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
       {{ t('DASHBOARD') }}
     </a>
 
@@ -20,21 +20,27 @@
       {{ t('ANALYTICS') }}
     </a>
     <a class="nav-link" routerLink="/events" routerLinkActive="active">
-  {{ t('EVENTS') }}
-</a>
+      {{ t('EVENTS') }}
+    </a>
   </div>
 
-  <div class="ms-auto">
-    <button class="btn btn-sm me-2" [ngClass]="getLang() === 'es' ? 'btn-light' : 'btn-outline-light'"
-      (click)="setLang('es')">
-      ES
-    </button>
 
-    <button class="btn btn-sm" [ngClass]="getLang() === 'en' ? 'btn-light' : 'btn-outline-light'"
-      (click)="setLang('en')">
-      EN
-    </button>
-  </div>
+  <div class="ms-auto"
+  *ngIf="authService.isLoggedIn()">
+
+  <span class="text-light me-3">
+    👤 {{ authService.getUser()?.username }}
+  </span>
+
+  <button
+    class="btn btn-outline-danger btn-sm"
+    (click)="logout()">
+
+    Logout
+
+  </button>
+
+</div>
 </nav>
 
 <router-outlet></router-outlet>

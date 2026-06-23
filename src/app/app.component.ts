@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { TranslationService } from './services/translation.service';
+import { Router } from '@angular/router';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -9,6 +11,8 @@ import { TranslationService } from './services/translation.service';
 export class AppComponent {
   constructor(
     public readonly translationService: TranslationService,
+    public authService: AuthService,
+    private readonly router: Router,
   ) { }
 
   t(key: string): string {
@@ -22,5 +26,10 @@ export class AppComponent {
 
   getLang(): string {
     return this.translationService.getLang();
+  }
+
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 }

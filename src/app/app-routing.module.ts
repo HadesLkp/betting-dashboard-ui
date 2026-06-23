@@ -8,20 +8,53 @@ import { AnalyticsComponent } from './pages/analytics/analytics.component';
 import { EventsComponent } from './pages/events/events.component';
 import { EventDetailComponent } from './pages/event-detail/event-detail.component';
 
+import { LoginComponent } from './pages/login/login.component';
+import { AuthGuard } from './guards/auth.guard';
+
 const routes: Routes = [
-  { path: '', component: DashboardComponent },
-  { path: 'bets', component: BetsComponent },
-  { path: 'bankroll', component: BankrollComponent },
-  { path: 'analytics', component: AnalyticsComponent },
-  { path: 'events', component: EventsComponent },
   {
+  path: 'dashboard',
+  component: DashboardComponent,
+  canActivate: [AuthGuard],
+},
+{
+  path: 'bets',
+  component: BetsComponent,
+  canActivate: [AuthGuard],
+},
+{
+  path: 'bankroll',
+  component: BankrollComponent,
+  canActivate: [AuthGuard],
+},
+{
+  path: 'analytics',
+  component: AnalyticsComponent,
+  canActivate: [AuthGuard],
+},
+{
+  path: 'events',
+  component: EventsComponent,
+  canActivate: [AuthGuard],
+},
+{
   path: 'events/:id',
   component: EventDetailComponent,
+  canActivate: [AuthGuard],
+},
+  {
+    path: 'login',
+    component: LoginComponent,
   },
+  {
+    path: '',
+    redirectTo: 'login',
+    pathMatch: 'full',
+  }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

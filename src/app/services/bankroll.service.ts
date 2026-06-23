@@ -10,13 +10,19 @@ export class BankrollService {
 
   constructor(private readonly http: HttpClient) {}
 
-  getCurrent(): Observable<any> {
-    return this.http.get<any>(this.apiUrl);
-  }
+  getCurrent() {
+  return this.http.get<any>(`${this.apiUrl}/current`);
+}
 
   getHistory(): Observable<any[]> {
     return this.http.get<any[]>(
       `${this.apiUrl}/history`,
     );
   }
+
+  createBankroll(initialAmount: number) {
+  return this.http.post<any>(this.apiUrl, {
+    initialAmount,
+  });
+}
 }
