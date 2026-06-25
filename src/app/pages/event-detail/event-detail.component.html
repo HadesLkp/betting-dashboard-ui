@@ -52,7 +52,7 @@
       <div class="col-md-4 mb-2" *ngFor="let outcome of market.outcomes">
 
         <div class="border rounded p-3 d-flex justify-content-between outcome-card"
-          (click)="selectOutcome(market, outcome)">
+          (click)="analyzeOutcome(market, outcome)">
           <span>
             {{ getOutcomeLabel(outcome) }}
           </span>
@@ -67,6 +67,11 @@
     </div>
 
   </div>
+
+  <app-analysis-card
+  *ngIf="predictionResult"
+  [analysis]="predictionResult">
+</app-analysis-card>
 
   <p class="text-muted">
     Haz click en una cuota para crear una apuesta con esos datos.

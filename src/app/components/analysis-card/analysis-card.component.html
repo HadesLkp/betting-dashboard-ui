@@ -1,0 +1,83 @@
+<div class="analysis-card mt-4" *ngIf="analysis">
+
+  <div class="analysis-header">
+    <h4>🤖 AI Match Analysis</h4>
+
+    <span class="badge" [ngClass]="analysis.recommendation === 'VALUE_BET'
+        ? 'bg-success'
+        : 'bg-danger'">
+      {{ analysis.recommendation === 'VALUE_BET' ? 'VALUE BET' : 'NO VALUE' }}
+    </span>
+  </div>
+
+  <div class="teams-row" *ngIf="analysis.teams">
+
+  <div class="team-box">
+    <img [src]="analysis.teams.homeTeam.logo">
+    <span>{{ analysis.teams.homeTeam.name }}</span>
+  </div>
+
+  <span class="vs">vs</span>
+
+  <div class="team-box">
+    <img [src]="analysis.teams.awayTeam.logo">
+    <span>{{ analysis.teams.awayTeam.name }}</span>
+  </div>
+
+</div>
+
+  <h3 class="rating">
+    {{ analysis.rating }}
+  </h3>
+
+  <div class="analysis-grid">
+
+    <div>
+      <small>Probabilidad modelo</small>
+      <strong>{{ analysis.modelProbability | number:'1.2-2' }}%</strong>
+    </div>
+
+    <div>
+      <small>Probabilidad mercado</small>
+      <strong>{{ analysis.impliedProbability | number:'1.2-2' }}%</strong>
+    </div>
+
+    <div>
+      <small>Edge</small>
+      <strong>
+        {{ analysis.edge > 0 ? '+' : '' }}{{ analysis.edge | number:'1.2-2' }}%
+      </strong>
+    </div>
+
+    <div>
+      <small>Kelly</small>
+      <strong>{{ analysis.kellyPercentage | number:'1.2-2' }}%</strong>
+    </div>
+
+    <div>
+      <small>Stake recomendado</small>
+      <strong>${{ analysis.recommendedStake | number:'1.2-2' }}</strong>
+    </div>
+
+    <div>
+      <small>EV</small>
+      <strong>
+        {{ analysis.evPerUnit > 0 ? '+' : '' }}{{ analysis.evPerUnit | number:'1.2-2' }}
+      </strong>
+    </div>
+
+  </div>
+
+  <div class="explanation-section mt-4" *ngIf="analysis.explanation?.positiveReasons?.length">
+
+    <h5>🧠 ¿Por qué el modelo recomienda esto?</h5>
+
+    <ul>
+      <li *ngFor="let reason of analysis.explanation.positiveReasons">
+        {{ reason }}
+      </li>
+    </ul>
+
+  </div>
+
+</div>

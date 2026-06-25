@@ -15,6 +15,7 @@ import { LoginComponent } from './pages/login/login.component';
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { AnalysisCardComponent } from './components/analysis-card/analysis-card.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
     AnalyticsComponent,
     EventsComponent,
     EventDetailComponent,
-    LoginComponent
+    LoginComponent,
+    AnalysisCardComponent
   ],
   imports: [
     BrowserModule,
