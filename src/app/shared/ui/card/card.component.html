@@ -1,0 +1,23 @@
+<div
+    class="ps-card"
+    [class.no-padding]="!padding">
+
+    <div
+        class="ps-card-header"
+        *ngIf="title">
+
+        <h3>{{title}}</h3>
+
+        <small *ngIf="subtitle">
+            {{subtitle}}
+        </small>
+
+    </div>
+
+    <div class="ps-card-body">
+
+        <ng-content></ng-content>
+
+    </div>
+
+</div>

@@ -16,6 +16,8 @@ import { LoginComponent } from './pages/login/login.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { AnalysisCardComponent } from './components/analysis-card/analysis-card.component';
+import { CreateBetDialogComponent } from './components/create-bet-dialog/create-bet-dialog.component';
+import { CardComponent } from './shared/ui/card/card.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,9 @@ import { AnalysisCardComponent } from './components/analysis-card/analysis-card.
     EventsComponent,
     EventDetailComponent,
     LoginComponent,
-    AnalysisCardComponent
+    AnalysisCardComponent,
+    CreateBetDialogComponent,
+    CardComponent
   ],
   imports: [
     BrowserModule,

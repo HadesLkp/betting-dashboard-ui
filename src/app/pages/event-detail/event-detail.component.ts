@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { OddsService } from '../../services/odds.service';
 import { Router } from '@angular/router';
 import { PredictorService } from '../../services/predictor.service';
+import { BetsService } from '../../services/bets.service';
 
 @Component({
   selector: 'app-event-detail',
@@ -15,12 +16,14 @@ export class EventDetailComponent implements OnInit {
   event: any;
   predictionResult: any = null;
   analyzing = false;
+  betDialogData: any = null
 
   constructor(
     private readonly route: ActivatedRoute,
     private readonly oddsService: OddsService,
     private readonly router: Router,
     private readonly predictorService: PredictorService,
+    private readonly betsService: BetsService,
   ) { }
 
   ngOnInit(): void {
@@ -78,6 +81,53 @@ export class EventDetailComponent implements OnInit {
       },
     });
   }
+  
+
+  createBetFromAnalysis(analysis: any): void {
+  this.betDialogData = {
+    sport: 'FOOTBALL',
+    eventName: `${this.event.homeTeam} vs ${this.event.awayTeam}`,
+    market: 'MATCH_WINNER',
+    selection:
+      analysis.selectionType === 'HOME'
+        ? this.event.homeTeam
+        : analysis.selectionType === 'AWAY'
+          ? this.event.awayTeam
+          : 'Draw',
+    odds: analysis.odds,
+    stake: Number(analysis.recommendedStake.toFixed(2)),
+    estimatedProbability: analysis.modelProbability,
+    rating: analysis.rating,
+  };
+}
+
+closeBetDialog(): void {
+  this.betDialogData = null;
+}
+
+saveBetFromDialog(bet: any): void {
+  const payload = {
+    sport: bet.sport,
+    eventName: bet.eventName,
+    market: bet.market,
+    selection: bet.selection,
+    odds: Number(bet.odds),
+    stake: Number(bet.stake),
+    estimatedProbability: Number(bet.estimatedProbability),
+  };
+
+  this.betsService.createBet(payload).subscribe({
+    next: (response) => {
+      console.log('BET CREATED:', response);
+      this.betDialogData = null;
+      alert('Apuesta creada correctamente');
+    },
+    error: (error) => {
+      console.error(error);
+      alert('Error creando la apuesta');
+    },
+  });
+}
 
   selectOutcome(market: any, outcome: any): void {
     this.router.navigate(['/bets'], {

@@ -6,19 +6,19 @@
 
   <div class="event-header mb-4">
 
-  <div class="team-title">
-    <span class="team-flag">{{ getTeamFlag(event.homeTeam) }}</span>
-    <span>{{ event.homeTeam }}</span>
+    <div class="team-title">
+      <span class="team-flag">{{ getTeamFlag(event.homeTeam) }}</span>
+      <span>{{ event.homeTeam }}</span>
+    </div>
+
+    <span class="vs-title">vs</span>
+
+    <div class="team-title">
+      <span class="team-flag">{{ getTeamFlag(event.awayTeam) }}</span>
+      <span>{{ event.awayTeam }}</span>
+    </div>
+
   </div>
-
-  <span class="vs-title">vs</span>
-
-  <div class="team-title">
-    <span class="team-flag">{{ getTeamFlag(event.awayTeam) }}</span>
-    <span>{{ event.awayTeam }}</span>
-  </div>
-
-</div>
 
   <hr>
 
@@ -68,13 +68,18 @@
 
   </div>
 
-  <app-analysis-card
-  *ngIf="predictionResult"
-  [analysis]="predictionResult">
-</app-analysis-card>
+  <app-analysis-card *ngIf="predictionResult" [analysis]="predictionResult" (createBet)="createBetFromAnalysis($event)">
+  </app-analysis-card>
 
   <p class="text-muted">
     Haz click en una cuota para crear una apuesta con esos datos.
   </p>
+
+  <app-create-bet-dialog
+  *ngIf="betDialogData"
+  [bet]="betDialogData"
+  (close)="closeBetDialog()"
+  (save)="saveBetFromDialog($event)">
+</app-create-bet-dialog>
 
 </div>

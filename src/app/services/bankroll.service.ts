@@ -8,11 +8,11 @@ import { Observable } from 'rxjs';
 export class BankrollService {
   private readonly apiUrl = 'http://localhost:3000/bankroll';
 
-  constructor(private readonly http: HttpClient) {}
+  constructor(private readonly http: HttpClient) { }
 
   getCurrent() {
-  return this.http.get<any>(`${this.apiUrl}/current`);
-}
+    return this.http.get<any>(`${this.apiUrl}/current`);
+  }
 
   getHistory(): Observable<any[]> {
     return this.http.get<any[]>(
@@ -21,8 +21,8 @@ export class BankrollService {
   }
 
   createBankroll(initialAmount: number) {
-  return this.http.post<any>(this.apiUrl, {
-    initialAmount,
-  });
-}
+    return this.http.post<any>(this.apiUrl, {
+      initialAmount,
+    });
+  }
 }

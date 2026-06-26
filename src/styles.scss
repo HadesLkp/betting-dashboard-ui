@@ -1,1 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
+@import './styles/variables';
+@import './styles/buttons';
+@import './styles/cards';
+@import './styles/forms';
+@import './styles/dialogs';
+@import './styles/badges';
+@import './styles/tables';
+
+body {
+  background: $bg-main;
+  color: $text-main;
+}

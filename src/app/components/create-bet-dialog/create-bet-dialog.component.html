@@ -1,0 +1,59 @@
+<div class="dialog-backdrop" *ngIf="bet">
+
+  <div class="dialog-card">
+
+    <div class="dialog-header">
+      <h4>Crear apuesta</h4>
+
+      <button class="btn-close" (click)="onClose()"></button>
+    </div>
+
+    <div class="mb-3">
+      <label>Evento</label>
+      <input class="form-control" [(ngModel)]="bet.eventName">
+    </div>
+
+    <div class="mb-3">
+      <label>Mercado</label>
+      <input class="form-control" [(ngModel)]="bet.market">
+    </div>
+
+    <div class="mb-3">
+      <label>Selección</label>
+      <input class="form-control" [(ngModel)]="bet.selection">
+    </div>
+
+    <div class="row">
+      <div class="col-md-4 mb-3">
+        <label>Cuota</label>
+        <input type="number" class="form-control" [(ngModel)]="bet.odds">
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <label>Probabilidad modelo</label>
+        <input type="number" class="form-control" [(ngModel)]="bet.estimatedProbability">
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <label>Stake</label>
+        <input type="number" class="form-control" [(ngModel)]="bet.stake">
+      </div>
+    </div>
+
+    <div class="alert alert-secondary">
+      Rating: <strong>{{ bet.rating }}</strong>
+    </div>
+
+    <div class="dialog-actions">
+      <button class="btn btn-outline-secondary" (click)="onClose()">
+        Cancelar
+      </button>
+
+      <button class="btn btn-success" (click)="onSave()">
+        Guardar apuesta
+      </button>
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,32 @@
+@import './variables';
+
+.form-control,
+.form-select {
+  background: $bg-input;
+  color: $text-main;
+  border: 1px solid $border-color;
+  border-radius: $radius-md;
+}
+
+.form-control:focus,
+.form-select:focus {
+  background: $bg-input;
+  color: $text-main;
+  border-color: $primary;
+  box-shadow: 0 0 0 0.15rem rgba(59, 130, 246, 0.25);
+}
+
+.form-control::placeholder {
+  color: $text-muted;
+}
+
+label,
+.form-label {
+  color: $text-muted;
+  font-weight: 600;
+}
+
+.form-control[readonly] {
+  background: $bg-card-soft;
+  color: $text-muted;
+}

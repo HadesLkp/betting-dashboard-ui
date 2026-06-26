@@ -12,19 +12,19 @@
 
   <div class="teams-row" *ngIf="analysis.teams">
 
-  <div class="team-box">
-    <img [src]="analysis.teams.homeTeam.logo">
-    <span>{{ analysis.teams.homeTeam.name }}</span>
+    <div class="team-box">
+      <img [src]="analysis.teams.homeTeam.logo">
+      <span>{{ analysis.teams.homeTeam.name }}</span>
+    </div>
+
+    <span class="vs">vs</span>
+
+    <div class="team-box">
+      <img [src]="analysis.teams.awayTeam.logo">
+      <span>{{ analysis.teams.awayTeam.name }}</span>
+    </div>
+
   </div>
-
-  <span class="vs">vs</span>
-
-  <div class="team-box">
-    <img [src]="analysis.teams.awayTeam.logo">
-    <span>{{ analysis.teams.awayTeam.name }}</span>
-  </div>
-
-</div>
 
   <h3 class="rating">
     {{ analysis.rating }}
@@ -68,16 +68,35 @@
 
   </div>
 
-  <div class="explanation-section mt-4" *ngIf="analysis.explanation?.positiveReasons?.length">
+  <div class="explanation-section mt-4" *ngIf="analysis.explanation">
 
-    <h5>🧠 ¿Por qué el modelo recomienda esto?</h5>
+    <div *ngIf="analysis.explanation.strengths?.length">
+      <h5>🧠 Fortalezas de esta selección</h5>
 
-    <ul>
-      <li *ngFor="let reason of analysis.explanation.positiveReasons">
-        {{ reason }}
-      </li>
-    </ul>
+      <ul>
+        <li *ngFor="let reason of analysis.explanation.strengths">
+          ✅ {{ reason }}
+        </li>
+      </ul>
+    </div>
+
+    <div class="mt-3" *ngIf="analysis.explanation.weaknesses?.length">
+
+      <h5>⚠️ Riesgos de esta selección</h5>
+
+      <ul>
+        <li *ngFor="let reason of analysis.explanation.weaknesses">
+          ❌ {{ reason }}
+        </li>
+      </ul>
+    </div>
 
   </div>
+
+  <button class="btn btn-success w-100 mt-4" (click)="onCreateBet()">
+
+    Crear apuesta con este análisis
+
+  </button>
 
 </div>

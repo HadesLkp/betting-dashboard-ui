@@ -1,0 +1,39 @@
+@import './variables';
+
+.table {
+  width: 100%;
+  color: $text-main;
+  background: transparent;
+  border-collapse: separate;
+  border-spacing: 0;
+  overflow: hidden;
+}
+
+.table thead th {
+  background: $bg-card-soft;
+  color: $text-muted;
+  border-bottom: 1px solid $border-color;
+  padding: 14px 16px;
+  font-weight: 700;
+}
+
+.table tbody td {
+  background: $bg-card;
+  color: $text-main;
+  border-bottom: 1px solid $border-color;
+  padding: 14px 16px;
+}
+
+.table tbody tr:hover td {
+  background: $bg-card-soft;
+}
+
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.table-responsive {
+  border: 1px solid $border-color;
+  border-radius: $radius-lg;
+  overflow: hidden;
+}
