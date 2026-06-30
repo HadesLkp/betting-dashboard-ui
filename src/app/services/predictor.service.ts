@@ -27,6 +27,7 @@ export class PredictorService {
     awayTeam: string;
     selectionType: 'HOME' | 'DRAW' | 'AWAY';
     odds: number;
+    commenceTime?: string;
   }) {
     return this.http.post<any>(
       `${this.apiUrl}/analyze-event`,
@@ -34,5 +35,5 @@ export class PredictorService {
     );
   }
 
-  
+
 }
