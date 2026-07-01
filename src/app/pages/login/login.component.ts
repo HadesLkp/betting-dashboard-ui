@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
+import { BankrollService } from 'src/app/services/bankroll.service';
 
 @Component({
   selector: 'app-login',
@@ -13,6 +14,7 @@ export class LoginComponent {
 
   constructor(
     private readonly authService: AuthService,
+    private readonly bankrollService: BankrollService,
     private readonly router: Router,
   ) {}
 
@@ -23,9 +25,19 @@ export class LoginComponent {
       username: this.username,
       password: this.password,
     }).subscribe({
-      next: (response) => {
-        this.authService.saveSession(response);
-        this.router.navigate(['/dashboard']);
+      next: () => {
+
+        this.bankrollService.getCurrent().subscribe({
+          next: () => {
+            // Ya tiene bankroll
+            this.router.navigate(['/']);
+          },
+          error: () => {
+            // No tiene bankroll
+            this.router.navigate(['/setup-bankroll']);
+          },
+        });
+
       },
       error: () => {
         this.error = 'Usuario o contraseña incorrectos';

@@ -18,6 +18,7 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { AnalysisCardComponent } from './components/analysis-card/analysis-card.component';
 import { CreateBetDialogComponent } from './components/create-bet-dialog/create-bet-dialog.component';
 import { CardComponent } from './shared/ui/card/card.component';
+import { SetupBankrollComponent } from './pages/setup-bankroll/setup-bankroll.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { CardComponent } from './shared/ui/card/card.component';
     LoginComponent,
     AnalysisCardComponent,
     CreateBetDialogComponent,
-    CardComponent
+    CardComponent,
+    SetupBankrollComponent
   ],
   imports: [
     BrowserModule,

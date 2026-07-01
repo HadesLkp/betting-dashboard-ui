@@ -87,7 +87,6 @@ export class EventDetailComponent implements OnInit {
 
 
   createBetFromAnalysis(analysis: any): void {
-    console.log(this.event)
     this.betDialogData = {
       sport: 'Football',
       eventName: `${this.event.homeTeam} vs ${this.event.awayTeam}`,

@@ -10,38 +10,39 @@ import { EventDetailComponent } from './pages/event-detail/event-detail.componen
 
 import { LoginComponent } from './pages/login/login.component';
 import { AuthGuard } from './guards/auth.guard';
+import { SetupBankrollComponent } from './pages/setup-bankroll/setup-bankroll.component';
 
 const routes: Routes = [
   {
-  path: 'dashboard',
-  component: DashboardComponent,
-  canActivate: [AuthGuard],
-},
-{
-  path: 'bets',
-  component: BetsComponent,
-  canActivate: [AuthGuard],
-},
-{
-  path: 'bankroll',
-  component: BankrollComponent,
-  canActivate: [AuthGuard],
-},
-{
-  path: 'analytics',
-  component: AnalyticsComponent,
-  canActivate: [AuthGuard],
-},
-{
-  path: 'events',
-  component: EventsComponent,
-  canActivate: [AuthGuard],
-},
-{
-  path: 'events/:id',
-  component: EventDetailComponent,
-  canActivate: [AuthGuard],
-},
+    path: 'dashboard',
+    component: DashboardComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'bets',
+    component: BetsComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'bankroll',
+    component: BankrollComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'analytics',
+    component: AnalyticsComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'events',
+    component: EventsComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'events/:id',
+    component: EventDetailComponent,
+    canActivate: [AuthGuard],
+  },
   {
     path: 'login',
     component: LoginComponent,
@@ -50,6 +51,10 @@ const routes: Routes = [
     path: '',
     redirectTo: 'login',
     pathMatch: 'full',
+  },
+  {
+    path: 'setup-bankroll',
+    component: SetupBankrollComponent,
   }
 ];
 
